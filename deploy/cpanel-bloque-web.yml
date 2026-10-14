@@ -1,0 +1,13 @@
+# ------------------------------------------------------------------
+# AGREGAR AL FINAL de la lista "tasks:" de tu .cpanel.yml actual.
+# No reemplaces el archivo: tus líneas de backend/ y frontend/ quedan igual.
+# Respeta la indentación (4 espacios + guion), igual que tus tareas actuales.
+# ------------------------------------------------------------------
+
+    # --- Web pública (Astro). web/dist se compila en local y se versiona. ---
+    - export WEBPATH=/home/araratch/public_html/
+    # Solo copia si el build es válido y no trae nada que pise lo existente:
+    #   - sin carpeta api/ (ahí vive la Python App)
+    #   - sin .htaccess en la raíz (el de public_html se mantiene a mano)
+    # "cp -R dist/." sobrescribe y agrega archivos, nunca borra los que ya están.
+    - if [ -f web/dist/index.html ] && [ ! -e web/dist/api ] && [ ! -e web/dist/.htaccess ]; then /bin/cp -R web/dist/. "$WEBPATH"; else echo "web/dist ausente o inseguro: NO se copió la web"; fi

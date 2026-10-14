@@ -1,0 +1,61 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { SITE } from '@/config/site';
+import { waLink } from '@/lib/whatsapp';
+import { breadcrumbSchema } from '@/lib/schema';
+import nosotros1 from '@/assets/img/pyrotect-nosotros-1.jpg';
+import nosotros2 from '@/assets/img/pyrotect-nosotros-2.jpg';
+
+const crumbs = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Pyrotect', href: '/pyrotect/' },
+  { name: 'Nosotros', href: '/pyrotect/nosotros/' },
+];
+const waMessage = 'Hola, quiero cotizar productos Pyrotect.';
+const fotos = [
+  { image: nosotros1, alt: 'Equipo de Pyrotect en la fábrica, junto a socios de la marca' },
+  { image: nosotros2, alt: 'Representante de Pyrotect con la camisa de la marca' },
+];
+---
+
+<BaseLayout
+  title="Nosotros · Pyrotect"
+  description={`${SITE.pyrotect.name}: distribuidores de Pyrotect, marca de equipamiento de seguridad para deportes motor fundada en 1972.`}
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ name: c.name, path: c.href })))]}
+  waMessage={waMessage}
+>
+  <PageHeader eyebrow={SITE.pyrotect.name} title="Nosotros" crumbs={crumbs} accent="pyrotect" />
+
+  <section class="section bg-white">
+    <div class="container-x grid gap-10 lg:grid-cols-2 lg:items-center">
+      <div>
+        <p class="text-lg leading-relaxed text-acero-700">
+          Pyrotect es una marca de equipamiento de seguridad para deportes de motor, fundada en 1972. Distribuimos sus
+          productos para pilotos y equipos de competición: butacas, cascos, trajes ignífugos y celdas de combustible, además de
+          sus repuestos y accesorios.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="/pyrotect/" class="btn bg-pyro-500 text-white hover:bg-pyro-600">Ver catálogo</a>
+          <a href={waLink(waMessage)} target="_blank" rel="noopener" class="btn-whatsapp">Cotizar por WhatsApp</a>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        {
+          fotos.map((f) => (
+            <Picture
+              src={f.image}
+              alt={f.alt}
+              formats={['avif', 'webp']}
+              widths={[320, 480, 800]}
+              sizes="(min-width: 1024px) 25vw, 50vw"
+              loading="eager"
+              class="aspect-[3/4] w-full rounded-lg object-cover object-top"
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

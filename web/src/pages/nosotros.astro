@@ -1,0 +1,91 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { SITE } from '@/config/site';
+import { breadcrumbSchema } from '@/lib/schema';
+import foto from '@/assets/img/nosotros.jpg';
+import foto2 from '@/assets/img/nosotros-2.jpg';
+
+const fotos = [
+  { image: foto, alt: 'Equipo de Ararat frente al taller' },
+  { image: foto2, alt: 'Cuatro integrantes del equipo de Ararat frente al taller, junto a un carro metálico' },
+];
+
+const crumbs = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Nosotros', href: '/nosotros/' },
+];
+
+const capacidades = [
+  'Mecánica industrial y mantenimiento',
+  'Fabricación de maquinaria y estructuras',
+  'Desarrollo de proyectos a medida',
+  'Automatización PLC / HMI',
+  'Plegadora CNC',
+  'Flota de talleres móviles para emergencias',
+];
+---
+
+<BaseLayout
+  title="Nosotros"
+  description="Ararat es una maestranza de soluciones industriales con atención 24/7, taller móvil y experiencia en minería y gran industria."
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ name: c.name, path: c.href })))]}
+>
+  <PageHeader eyebrow="Quiénes somos" title="Soluciones industriales, sin rodeos" crumbs={crumbs} />
+
+  <section class="section">
+    <div class="container-x grid gap-10 lg:grid-cols-2 lg:items-center">
+      <div class="space-y-4 text-lg leading-relaxed text-acero-700">
+        <!-- TODO: revisar con la empresa (año de fundación, ubicación del taller, equipo). -->
+        <p>
+          <strong class="text-acero-900">{SITE.name}</strong> es una maestranza dedicada al mantenimiento industrial y la
+          fabricación. Trabajamos para minería, construcción, agroindustria y también para particulares.
+        </p>
+        <p>
+          Nuestro equipo combina experiencia en la gran industria con un taller equipado y talleres móviles que nos
+          permiten responder emergencias 24/7, en el taller o directamente en tu faena.
+        </p>
+        <p>
+          Con <strong class="text-acero-900">{SITE.kairos.name}</strong> sumamos el arriendo de equipos por día, para
+          que tengas en un solo lugar la maestranza, los insumos y las herramientas.
+        </p>
+        <p>
+          Y creemos que una empresa crece junto a su gente: apoyamos a deportistas de la zona, promovemos
+          la seguridad de nuestra comunidad, fomentamos la tecnología, reciclamos nuestros residuos y cumplimos la normativa laboral.
+          <a href="/responsabilidad-social/" class="font-semibold text-cian-600 hover:text-cian-500">Conoce nuestra responsabilidad social →</a>
+        </p>
+      </div>
+      <div class="grid gap-4">
+        {
+          fotos.map((f) => (
+            <Picture
+              src={f.image}
+              alt={f.alt}
+              formats={['avif', 'webp']}
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              class="aspect-[3/2] w-full rounded-lg object-cover"
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-acero-950 text-white">
+    <div class="container-x">
+      <h2 class="text-4xl">Capacidades</h2>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          capacidades.map((c) => (
+            <li class="rounded-lg border border-white/10 p-5 font-display text-xl font-semibold uppercase">{c}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

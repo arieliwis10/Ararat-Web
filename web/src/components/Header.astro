@@ -1,0 +1,193 @@
+---
+/**
+ * Cabecera con las tres marcas: Ararat (izquierda), Kairos (centro) y Pyrotect (derecha).
+ * Las barritas (a la izquierda del logo) abren el menú de la marca y el logo lleva a su inicio;
+ * los enlaces salen de los archivos de datos.
+ */
+import { SITE } from '@/config/site';
+import { SERVICIOS, FABRICACION } from '@/data/servicios';
+import { EQUIPOS } from '@/data/kairos';
+import { CATEGORIAS } from '@/data/pyrotect';
+import { slugify } from '@/lib/slug';
+import { waLink } from '@/lib/whatsapp';
+import Logo from '@/components/Logo.astro';
+
+const path = Astro.url.pathname;
+const current = path.startsWith('/kairos') ? 'kairos' : path.startsWith('/pyrotect') ? 'pyrotect' : 'ararat';
+const categoriasKairos = [...new Set(EQUIPOS.map((e) => e.categoria))];
+
+const brands = [
+  {
+    id: 'ararat',
+    name: SITE.name,
+    home: '/',
+    align: 'justify-start',
+    active: 'border-cian-500',
+    title: 'text-cian-400',
+    hover: 'hover:text-cian-400',
+    groups: [
+      { title: 'Servicios', links: SERVICIOS.map((s) => ({ label: s.title, href: `/servicios/${s.slug}/` })) },
+      { title: 'Fabricación', links: FABRICACION.map((f) => ({ label: f.title, href: '/servicios/#fabricacion' })) },
+      {
+        title: 'Empresa',
+        links: [
+          { label: 'Inicio', href: '/' },
+          { label: 'Todos los servicios', href: '/servicios/' },
+          { label: 'Trabajos realizados', href: '/trabajos/' },
+          { label: 'Nosotros', href: '/nosotros/' },
+          { label: 'Responsabilidad social', href: '/responsabilidad-social/' },
+          { label: 'Contacto', href: '/contacto/' },
+        ],
+      },
+    ],
+    cta: { label: 'Cotizar', href: '/contacto/', class: 'btn-primary' },
+    wa: 'Hola, quiero cotizar un trabajo de maestranza.',
+  },
+  {
+    id: 'kairos',
+    name: SITE.kairos.name,
+    home: '/kairos/',
+    align: 'justify-center',
+    active: 'border-kairos-500',
+    title: 'text-kairos-400',
+    hover: 'hover:text-kairos-400',
+    groups: [
+      { title: 'Equipos y maquinaria', links: categoriasKairos.map((c) => ({ label: c, href: `/kairos/#${slugify(c)}` })) },
+      {
+        title: 'Arriendos',
+        links: [
+          { label: 'Catálogo completo', href: '/kairos/' },
+          { label: 'Cómo arrendar', href: '/kairos/#como-arrendar' },
+          { label: 'Cotizar arriendo', href: '/kairos/#cotizar' },
+        ],
+      },
+    ],
+    cta: { label: 'Cotizar arriendo', href: '/kairos/#cotizar', class: 'btn bg-kairos-500 text-acero-950 hover:bg-kairos-400' },
+    wa: 'Hola, quiero consultar disponibilidad de equipos en arriendo.',
+  },
+  {
+    id: 'pyrotect',
+    name: SITE.pyrotect.name,
+    home: '/pyrotect/',
+    align: 'justify-end',
+    active: 'border-pyro-500',
+    title: 'text-pyro-400',
+    hover: 'hover:text-pyro-400',
+    groups: [
+      { title: 'Productos', links: CATEGORIAS.map((c) => ({ label: c.name, href: `/pyrotect/#${c.slug}` })) },
+      {
+        title: 'Pyrotect',
+        links: [
+          { label: 'Catálogo completo', href: '/pyrotect/' },
+          { label: 'Nosotros', href: '/pyrotect/nosotros/' },
+          { label: 'Cotizar productos', href: '/pyrotect/#cotizar' },
+        ],
+      },
+    ],
+    cta: { label: 'Cotizar productos', href: '/pyrotect/#cotizar', class: 'btn bg-pyro-500 text-white hover:bg-pyro-600' },
+    wa: 'Hola, quiero cotizar productos Pyrotect.',
+  },
+] as const;
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-white/10 bg-black text-white"
+  data-header
+>
+  <div class="container-x grid h-16 grid-cols-[auto_1fr_auto] items-stretch gap-1 sm:grid-cols-3 sm:gap-4">
+    {
+      brands.map((b) => (
+        <div class:list={['flex items-stretch', b.align]}>
+          {/* Barritas a la izquierda (abren el menú) y logo a la derecha (lleva al inicio de la marca). */}
+          <div class:list={['flex items-center gap-0.5 border-b-2 sm:gap-4', current === b.id ? b.active : 'border-transparent']}>
+            <button
+              type="button"
+              class="inline-flex h-12 w-7 items-center justify-center rounded-md transition-colors hover:bg-white/10 aria-expanded:bg-white/15 sm:size-11"
+              aria-label={`Menú de ${b.name}`}
+              aria-controls={`menu-${b.id}`}
+              aria-expanded="false"
+              data-menu-toggle
+            >
+              <svg class="size-5 shrink-0 sm:size-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+              </svg>
+            </button>
+            <a
+              href={b.home}
+              class="inline-flex h-12 items-center rounded-md transition-opacity hover:opacity-80 sm:px-1"
+              aria-label={`${b.name}, ir al inicio`}
+            >
+              {/* El logo de Kairos es más alto en proporción: desde sm se agranda para igualar a los otros dos. */}
+              <Logo
+                brand={b.id}
+                class:list={['h-4 min-[360px]:h-5 min-[400px]:h-6', b.id === 'kairos' ? 'sm:h-10 lg:h-11' : 'sm:h-8 lg:h-9']}
+              />
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    brands.map((b) => (
+      <nav
+        id={`menu-${b.id}`}
+        aria-label={b.name}
+        class="absolute inset-x-0 top-full hidden max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-black shadow-2xl"
+        data-menu
+      >
+        <div class="container-x grid gap-x-8 gap-y-6 py-6 sm:grid-cols-2 lg:grid-cols-4">
+          {b.groups.map((g) => (
+            <div>
+              <p class:list={['font-display text-sm font-semibold uppercase tracking-[0.2em]', b.title]}>{g.title}</p>
+              <ul class="mt-2 font-display text-lg font-semibold uppercase tracking-wide">
+                {g.links.map((l) => (
+                  <li>
+                    <a href={l.href} class:list={['block py-1.5 text-acero-100 transition-colors', b.hover]}>
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div class="flex flex-col gap-3 sm:col-span-2 lg:col-span-1 lg:col-start-4">
+            <a href={b.cta.href} class={b.cta.class}>{b.cta.label}</a>
+            <a href={waLink(b.wa)} class="btn-whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+        </div>
+      </nav>
+    ))
+  }
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggles = [...document.querySelectorAll<HTMLButtonElement>('[data-menu-toggle]')];
+  const panel = (btn: HTMLButtonElement) => document.getElementById(btn.getAttribute('aria-controls') ?? '');
+
+  const closeAll = () =>
+    toggles.forEach((btn) => {
+      btn.setAttribute('aria-expanded', 'false');
+      panel(btn)?.classList.add('hidden');
+    });
+
+  toggles.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      closeAll();
+      if (!open) {
+        btn.setAttribute('aria-expanded', 'true');
+        panel(btn)?.classList.remove('hidden');
+      }
+    }),
+  );
+
+  // Cerrar con Escape, al hacer clic fuera y al elegir un enlace (anclas de la misma página).
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && closeAll());
+  document.addEventListener('click', (e) => {
+    const target = e.target as Element;
+    if (!header?.contains(target) || target.closest('[data-menu] a')) closeAll();
+  });
+</script>

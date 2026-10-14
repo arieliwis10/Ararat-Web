@@ -1,0 +1,112 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import QuoteForm from '@/components/QuoteForm.astro';
+import Carousel from '@/components/Carousel.astro';
+import PreguntasFrecuentes from '@/components/PreguntasFrecuentes.astro';
+import { SERVICIOS, type Servicio } from '@/data/servicios';
+import { TRABAJOS } from '@/data/trabajos';
+import { waLink } from '@/lib/whatsapp';
+import { breadcrumbSchema, faqSchema, serviceSchema } from '@/lib/schema';
+
+export const getStaticPaths = (() =>
+  SERVICIOS.map((servicio) => ({ params: { slug: servicio.slug }, props: { servicio } }))) satisfies GetStaticPaths;
+
+interface Props {
+  servicio: Servicio;
+}
+const { servicio: s } = Astro.props;
+
+const crumbs = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Servicios', href: '/servicios/' },
+  { name: s.title, href: `/servicios/${s.slug}/` },
+];
+const hayTrabajos = TRABAJOS.some((t) => t.categoria === s.slug);
+const waMessage = `Hola, quiero cotizar: ${s.title}.`;
+const otros = SERVICIOS.filter((o) => o.slug !== s.slug);
+
+const schema = [
+  serviceSchema(s),
+  breadcrumbSchema(crumbs.map((c) => ({ name: c.name, path: c.href }))),
+  ...(s.faq.length ? [faqSchema(s.faq)] : []),
+];
+---
+
+<BaseLayout title={s.seoTitle} description={s.description} schema={schema} waMessage={waMessage}>
+  <PageHeader eyebrow="Servicio" title={s.title} text={s.intro} crumbs={crumbs}>
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a href={waLink(waMessage)} target="_blank" rel="noopener" class="btn-whatsapp">Cotizar por WhatsApp</a>
+      <a href="#cotizar" class="btn-ghost">Formulario</a>
+    </div>
+  </PageHeader>
+
+  <section class="section">
+    <div class="container-x grid gap-10 lg:grid-cols-2 lg:items-start">
+      <Picture
+        src={s.image}
+        alt={s.imageAlt}
+        formats={['avif', 'webp']}
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        class="aspect-[1279/925] w-full rounded-lg object-cover"
+      />
+      <div>
+        <h2 class="text-3xl">Qué hacemos</h2>
+        <ul class="mt-4 space-y-3">
+          {
+            s.items.map((it) => (
+              <li class="flex gap-3">
+                <span class="mt-2 size-2 shrink-0 rotate-45 bg-cian-500" aria-hidden="true" />
+                <span class="text-acero-800">{it}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <h2 class="mt-10 text-3xl">Industrias</h2>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {s.industries.map((i) => <li class="rounded-full bg-acero-100 px-3 py-1 text-sm font-medium">{i}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trabajos de este servicio publicados en el panel web; sin trabajos, la sección no se muestra. -->
+  <section class="section bg-acero-100" data-contenido-bloque hidden={!hayTrabajos}>
+    <div class="container-x">
+      <h2 class="text-3xl sm:text-4xl">Trabajos de {s.title.toLowerCase()}</h2>
+      <div class="mt-8">
+        <Carousel label={`Trabajos de ${s.title}`} tipo="trabajos-tarjetas" categoria={s.slug} />
+      </div>
+    </div>
+  </section>
+
+  <PreguntasFrecuentes seccion={s.slug} />
+
+  <section id="cotizar" class="section scroll-mt-16 bg-acero-950 text-white">
+    <div class="container-x max-w-3xl">
+      <h2 class="text-3xl sm:text-4xl">Cotiza {s.title.toLowerCase()}</h2>
+      <p class="mb-8 mt-2 text-acero-300">Respondemos en horario hábil; para emergencias, escríbenos por WhatsApp.</p>
+      <QuoteForm servicio={s.slug} dark />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-x">
+      <h2 class="text-2xl">Otros servicios</h2>
+      <ul class="mt-4 flex flex-wrap gap-3">
+        {
+          otros.map((o) => (
+            <li>
+              <a href={`/servicios/${o.slug}/`} class="inline-block rounded-md border border-acero-300 px-4 py-2 hover:border-cian-500 hover:text-cian-600">
+                {o.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

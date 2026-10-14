@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+
+/*
+ * Paleta provisoria (TODO: reemplazar por la de la marca cuando la tengas).
+ * acero  = fondos oscuros industriales
+ * cian   = azul del logo Ararat (maestranza)
+ * kairos = verde del logo Kairos (arriendos)
+ * pyro   = rojo del logo Pyrotect (racing)
+ */
+@theme {
+  --color-acero-950: #0b0e12;
+  --color-acero-900: #12161c;
+  --color-acero-800: #1b2129;
+  --color-acero-700: #2a323d;
+  --color-acero-500: #5b6675;
+  --color-acero-300: #a9b2bd;
+  --color-acero-100: #e7eaee;
+  --color-acero-50: #f5f6f8;
+
+  /* 500 es el azul exacto del logo; 600 es más oscuro para texto sobre fondos claros. */
+  --color-cian-600: #0082b4;
+  --color-cian-500: #00b4fd;
+  --color-cian-400: #4cc9ff;
+
+  --color-kairos-500: #62b22f;
+  --color-kairos-400: #7fd04a;
+
+  --color-pyro-600: #b8041c;
+  --color-pyro-500: #e10525;
+  --color-pyro-400: #ff4d5e;
+
+  --color-whatsapp: #25d366;
+
+  --font-display: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-acero-50 text-acero-900 font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display font-bold uppercase tracking-wide leading-[1.05];
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-cian-500;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+/* Tailwind v4: las clases propias reutilizables se declaran con @utility */
+@utility container-x {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+}
+@utility btn {
+  @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-5 font-display text-lg font-bold uppercase tracking-wide transition-colors;
+}
+@utility btn-primary {
+  @apply btn bg-cian-500 text-acero-950 hover:bg-cian-400;
+}
+@utility btn-whatsapp {
+  @apply btn bg-whatsapp text-acero-950 hover:brightness-95;
+}
+@utility btn-ghost {
+  @apply btn border border-white/40 text-white hover:bg-white/10;
+}
+@utility eyebrow {
+  @apply font-display text-sm font-semibold uppercase tracking-[0.2em] text-cian-500;
+}
+@utility section {
+  @apply py-16 sm:py-20;
+}
+
+/* Pantalla de entrada (components/PantallaEntrada.astro): solo existe mientras <html> tiene data-entrada. */
+[data-entrada-pantalla] {
+  display: none;
+}
+html[data-entrada] {
+  overflow: hidden;
+}
+html[data-entrada] [data-entrada-pantalla] {
+  display: flex;
+}
+[data-entrada-pantalla][data-cerrando] {
+  opacity: 0;
+}
+
+/* Contenido del panel web: oculto un instante mientras responde la API (ver BaseLayout). */
+[data-contenido] {
+  transition: opacity 0.2s;
+}
+html[data-carga-contenido='pendiente'] [data-contenido] {
+  opacity: 0;
+}
+
+/* Carrusel con CSS scroll-snap (sin librería). Ver components/Carousel.astro */
+.carousel-track {
+  scrollbar-width: none;
+}
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}

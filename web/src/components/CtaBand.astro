@@ -1,0 +1,30 @@
+---
+import { waLink } from '@/lib/whatsapp';
+
+interface Props {
+  title?: string;
+  text?: string;
+  waMessage?: string;
+  servicio?: string;
+}
+const {
+  title = '¿Tienes un equipo detenido?',
+  text = 'Cuéntanos qué necesitas y te respondemos con una cotización. Atendemos emergencias 24/7.',
+  waMessage,
+  servicio,
+} = Astro.props;
+const formHref = servicio ? `/contacto/?servicio=${servicio}` : '/contacto/';
+---
+
+<section class="bg-cian-500 text-acero-950">
+  <div class="container-x flex flex-col gap-6 py-12 md:flex-row md:items-center md:justify-between">
+    <div>
+      <h2 class="text-3xl sm:text-4xl">{title}</h2>
+      <p class="mt-2 max-w-xl text-acero-950/90">{text}</p>
+    </div>
+    <div class="flex flex-col gap-3 sm:flex-row">
+      <a href={waLink(waMessage)} target="_blank" rel="noopener" class="btn bg-acero-950 text-white hover:bg-acero-900">WhatsApp</a>
+      <a href={formHref} class="btn bg-white text-acero-950 hover:bg-acero-100">Formulario de cotización</a>
+    </div>
+  </div>
+</section>

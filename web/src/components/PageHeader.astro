@@ -1,0 +1,41 @@
+---
+import type { ImageMetadata } from 'astro';
+import FondoVideo from '@/components/FondoVideo.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  text?: string;
+  crumbs?: { name: string; href: string }[];
+  /** Color del sector: Ararat (por defecto), Kairos o Pyrotect */
+  accent?: 'ararat' | 'kairos' | 'pyrotect';
+  /** Video de fondo: convierte la cabecera en una portada alta (ver FondoVideo.astro). */
+  video?: { image: ImageMetadata; imageAlt: string; mp4: string; mp4Mobile?: string };
+}
+const { eyebrow, title, text, crumbs = [], accent = 'ararat', video } = Astro.props;
+const accentClass = { ararat: 'text-cian-500', kairos: 'text-kairos-400', pyrotect: 'text-pyro-400' }[accent];
+---
+
+<section class:list={['bg-acero-950 text-white', video && 'relative isolate flex min-h-[75svh] items-end overflow-hidden']}>
+  {video && <FondoVideo image={video.image} imageAlt={video.imageAlt} videoMp4={video.mp4} videoMp4Mobile={video.mp4Mobile} />}
+  <div class:list={['container-x', video ? 'pb-14 pt-28 sm:pb-20' : 'py-12 sm:py-16']}>
+    {
+      crumbs.length > 0 && (
+        <nav aria-label="Ruta de navegación" class:list={['mb-4 text-sm', video ? 'text-acero-100' : 'text-acero-300']}>
+          <ol class="flex flex-wrap gap-2">
+            {crumbs.map((c, i) => (
+              <li class="flex gap-2">
+                {i > 0 && <span aria-hidden="true">/</span>}
+                {i < crumbs.length - 1 ? <a class="hover:text-white" href={c.href}>{c.name}</a> : <span aria-current="page">{c.name}</span>}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+    {eyebrow && <p class:list={['eyebrow', accentClass]}>{eyebrow}</p>}
+    <h1 class="mt-2 max-w-4xl text-4xl sm:text-6xl">{title}</h1>
+    {text && <p class:list={['mt-4 max-w-2xl text-lg', video ? 'text-acero-100' : 'text-acero-300']}>{text}</p>}
+    <slot />
+  </div>
+</section>

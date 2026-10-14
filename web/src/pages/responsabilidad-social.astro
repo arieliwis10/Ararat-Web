@@ -1,0 +1,134 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import Contenido from '@/components/Contenido.astro';
+import { waLink } from '@/lib/whatsapp';
+import { breadcrumbSchema } from '@/lib/schema';
+
+const crumbs = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Responsabilidad social', href: '/responsabilidad-social/' },
+];
+const waMessage = 'Hola, quiero conversar sobre un patrocinio o apoyo a la comunidad.';
+/** Comunas donde la empresa desarrolla su responsabilidad social. */
+const comunas = ['Salamanca', 'Paine'];
+
+/**
+ * Ejes de la responsabilidad social. Los textos son fijos; sus actividades (fotos) vienen del panel web
+ * ("RSE: actividades"), filtradas por el `id` del eje. Un eje sin actividades publicadas muestra solo su texto.
+ */
+const ejes = [
+  {
+    id: 'deporte',
+    titulo: 'Deporte',
+    texto:
+      'Apoyamos a deportistas de nuestras comunas para que puedan entrenar, competir y representarlas. Hoy acompañamos al ciclismo de montaña.',
+  },
+  {
+    id: 'seguridad',
+    titulo: 'Seguridad y bienestar',
+    texto:
+      'Trabajamos junto a quienes cuidan a nuestra comunidad todos los días y apoyamos las iniciativas que promueven la seguridad y el bienestar de nuestros vecinos.',
+  },
+  {
+    id: 'educacion',
+    titulo: 'Educación y tecnología',
+    texto:
+      'Fomentamos la tecnología y la innovación. Patrocinamos la Liga de Robótica, que acerca a niños y jóvenes a la ciencia, la programación y la ingeniería.',
+  },
+  {
+    id: 'ambiente',
+    titulo: 'Medio ambiente',
+    texto:
+      'Reciclamos los residuos de nuestro taller y de nuestra operación. Así reducimos lo que va a la basura y le damos una segunda vida a los materiales.',
+    etiquetas: ['Chatarra', 'Metal', 'Latas', 'Plásticos', 'Cartones'],
+  },
+  {
+    id: 'laboral',
+    titulo: 'Trabajo seguro y cumplimiento',
+    texto:
+      'La seguridad de nuestro equipo y de quienes trabajan con nosotros es parte de cada trabajo. Cumplimos la normativa laboral chilena:',
+    puntos: [
+      'Ley 16.744 sobre accidentes del trabajo y enfermedades profesionales.',
+      'Ley 20.123 de subcontratación.',
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Responsabilidad Social Empresarial"
+  description="La responsabilidad social de Ararat: apoyo al deporte, a la seguridad de la comunidad y a la educación tecnológica, reciclaje y cumplimiento de la normativa laboral."
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ name: c.name, path: c.href })))]}
+  waMessage={waMessage}
+>
+  <PageHeader
+    eyebrow="RSE · Ararat"
+    title="Responsabilidad Social Empresarial"
+    text="Creemos que una empresa crece junto a su gente. Por eso, en las comunas donde trabajamos, apoyamos el deporte, la seguridad y la educación, cuidamos el medio ambiente y trabajamos con seguridad y apego a la ley."
+    crumbs={crumbs}
+  >
+    <ul class="mt-6 flex flex-wrap items-center gap-2" aria-label="Comunas">
+      <li class="text-sm font-semibold uppercase tracking-[0.2em] text-acero-300">Presentes en</li>
+      {comunas.map((c) => <li class="rounded-full bg-cian-500 px-4 py-1.5 font-display text-lg font-bold uppercase tracking-wide text-acero-950">{c}</li>)}
+    </ul>
+  </PageHeader>
+
+  <nav aria-label="Ejes de responsabilidad social" class="border-b border-acero-100 bg-white">
+    <ul class="container-x flex flex-wrap gap-2 py-4 text-sm">
+      {
+        ejes.map((eje) => (
+          <li>
+            <a href={`#${eje.id}`} class="inline-block rounded-full border border-acero-300 px-3 py-1.5 font-semibold text-acero-700 transition-colors hover:border-cian-500 hover:text-cian-600">
+              {eje.titulo}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    ejes.map((eje, i) => (
+      <section id={eje.id} class:list={['section scroll-mt-16', i % 2 ? 'bg-acero-100' : 'bg-white']}>
+        <div class="container-x">
+          <div class="flex flex-wrap items-center justify-between gap-6">
+            <div class="max-w-2xl">
+              <p class="eyebrow">{String(i + 1).padStart(2, '0')}</p>
+              <h2 class="mt-2 text-4xl sm:text-5xl">{eje.titulo}</h2>
+              <p class="mt-4 text-lg text-acero-700">{eje.texto}</p>
+              {eje.puntos && (
+                <ul class="mt-4 space-y-2">
+                  {eje.puntos.map((p) => (
+                    <li class="flex gap-3 text-acero-800">
+                      <span class="mt-2 size-2 shrink-0 rotate-45 bg-cian-500" aria-hidden="true" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {eje.etiquetas && (
+                <ul class="mt-5 flex flex-wrap gap-2" aria-label="Materiales que reciclamos">
+                  {eje.etiquetas.map((e) => (
+                    <li class="rounded-full bg-kairos-500/15 px-4 py-1.5 font-display text-lg font-semibold uppercase tracking-wide text-acero-900">{e}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+          <Contenido tipo="comunidad" categoria={eje.id} class="mt-8 grid gap-6 empty:mt-0 sm:grid-cols-2 lg:grid-cols-3" />
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="bg-cian-500 text-acero-950">
+    <div class="container-x flex flex-col gap-6 py-12 md:flex-row md:items-center md:justify-between">
+      <div>
+        <h2 class="text-3xl sm:text-4xl">¿Tienes un club, una actividad o un proyecto en {comunas.join(' o ')}?</h2>
+        <p class="mt-2 max-w-xl text-acero-950/90">Conversemos. Nos interesa apoyar iniciativas que hagan crecer a nuestra comunidad.</p>
+      </div>
+      <a href={waLink(waMessage)} target="_blank" rel="noopener" class="btn shrink-0 bg-acero-950 text-white hover:bg-acero-900">Escríbenos por WhatsApp</a>
+    </div>
+  </section>
+</BaseLayout>

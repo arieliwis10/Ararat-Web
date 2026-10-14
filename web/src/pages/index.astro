@@ -1,0 +1,206 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import FondoVideo from '@/components/FondoVideo.astro';
+import Logo from '@/components/Logo.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import Carousel from '@/components/Carousel.astro';
+import Contenido from '@/components/Contenido.astro';
+import NotaConfidencialidad from '@/components/NotaConfidencialidad.astro';
+import Certificaciones from '@/components/Certificaciones.astro';
+import YouTube from '@/components/YouTube.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { SITE } from '@/config/site';
+import { SERVICIOS, FABRICACION, FABRICACION_CARD } from '@/data/servicios';
+import { waLink } from '@/lib/whatsapp';
+import fondo from '@/assets/img/video-ararat.jpg';
+
+// La portada es el inicio de Ararat. Kairos y Pyrotect tienen su propia sección (/kairos/, /pyrotect/).
+const otrasMarcas = [
+  {
+    id: 'kairos',
+    href: '/kairos/',
+    text: 'Arriendo de equipos y maquinaria por día para obra, taller e industria.',
+    cta: 'Ver arriendos',
+    border: 'border-kairos-500',
+    link: 'text-kairos-400',
+  },
+  {
+    id: 'pyrotect',
+    href: '/pyrotect/',
+    text: 'Indumentaria racing: butacas, cascos, trajes y celdas de combustible para competición.',
+    cta: 'Ver productos',
+    border: 'border-pyro-500',
+    link: 'text-pyro-400',
+  },
+] as const;
+
+const valores = [
+  { t: 'Emergencias 24/7', d: 'Respuesta rápida cuando tu equipo está detenido.' },
+  { t: 'Taller móvil', d: 'Reparamos en tu faena cuando el equipo no se puede mover.' },
+  { t: 'Experiencia en minería', d: 'Trabajamos con los estándares de la gran industria.' },
+  { t: 'Todo en un lugar', d: 'Maestranza, fabricación, repuestos e insumos.' },
+];
+---
+
+<BaseLayout title={SITE.name}>
+  <!-- Presentación, con el video del taller de fondo -->
+  <section class="relative isolate flex min-h-[75svh] items-end overflow-hidden bg-acero-950 text-white">
+    <FondoVideo image={fondo} imageAlt="Taller de Ararat" videoMp4="/video/ararat.mp4" videoMp4Mobile="/video/ararat-720.mp4" />
+    <div class="container-x pb-14 pt-28 sm:pb-20">
+      <p class="eyebrow">Ararat Maestranza</p>
+      <h1 class="mt-3 max-w-3xl text-4xl sm:text-5xl lg:text-6xl">Soluciones metálicas para la industria y la obra</h1>
+      <p class="mt-4 max-w-xl text-lg text-acero-100">
+        Soldadura, torno, flexibles hidráulicos, repuestos e insumos, y fabricación de equipos y estructuras a pedido.
+      </p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href={waLink()} target="_blank" rel="noopener" class="btn-whatsapp">Cotizar por WhatsApp</a>
+        <a href="/contacto/" class="btn-ghost">Formulario de cotización</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Propuesta de valor -->
+  <section class="border-b border-acero-100 bg-white">
+    <ul class="container-x grid grid-cols-2 gap-6 py-10 lg:grid-cols-4">
+      {
+        valores.map((v) => (
+          <li>
+            <p class="font-display text-xl font-bold uppercase text-acero-900">{v.t}</p>
+            <p class="mt-1 text-sm text-acero-700">{v.d}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Ararat: servicios -->
+  <section class="section">
+    <div class="container-x">
+      <p class="eyebrow">Ararat Maestranza</p>
+      <h2 class="mt-2 text-4xl sm:text-5xl">Nuestros servicios</h2>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {SERVICIOS.map((s) => <ServiceCard servicio={s} />)}
+        <ServiceCard servicio={FABRICACION_CARD} href="/servicios/#fabricacion" cta="Ver fabricación" />
+      </div>
+
+      <div class="mt-14 flex items-end justify-between gap-4">
+        <h3 class="text-3xl sm:text-4xl">Fabricación y proyectos</h3>
+        <a href="/servicios/#fabricacion" class="hidden font-display font-semibold uppercase text-cian-600 sm:block">Ver detalle →</a>
+      </div>
+      <ul class="mt-6 flex flex-wrap gap-3">
+        {
+          FABRICACION.map((f) => (
+            <li>
+              <a
+                href="/servicios/#fabricacion"
+                class="inline-flex min-h-11 items-center rounded-md bg-white px-4 font-display text-lg font-semibold uppercase tracking-wide text-acero-900 ring-1 ring-acero-100 transition hover:ring-cian-500"
+              >
+                {f.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Ararat: trabajos (contenido del panel web) -->
+  <section class="section bg-acero-100" data-contenido-bloque>
+    <div class="container-x">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow">Portafolio</p>
+          <h2 class="mt-2 text-4xl sm:text-5xl">Trabajos realizados</h2>
+        </div>
+        <a href="/trabajos/" class="hidden font-display font-semibold uppercase text-cian-600 sm:block">Ver todos →</a>
+      </div>
+      <div class="mt-10">
+        <Carousel label="Trabajos realizados" tipo="trabajos-tarjetas" />
+      </div>
+      <NotaConfidencialidad class="mt-8" />
+    </div>
+  </section>
+
+  <Certificaciones />
+
+  <!-- Responsabilidad social: una foto por eje que va cambiando sola (actividades del panel, "RSE: actividades") -->
+  <section id="rse" class="section scroll-mt-16 bg-white" data-contenido-bloque>
+    <div class="container-x grid items-center gap-10 lg:grid-cols-2">
+      <Contenido
+        tipo="comunidad-diapos"
+        class="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-acero-100"
+      />
+      <div>
+        <p class="eyebrow">Responsabilidad social</p>
+        <h2 class="mt-2 text-4xl sm:text-5xl">Crecemos junto a nuestra gente</h2>
+        <p class="mt-4 max-w-xl text-lg text-acero-700">
+          Apoyamos a deportistas de la zona, promovemos la seguridad de nuestra comunidad, fomentamos la tecnología entre los
+          jóvenes y reciclamos los residuos de nuestro taller.
+        </p>
+        <a href="/responsabilidad-social/" class="btn-primary mt-8">Conoce nuestra RSE</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enlace a los otros dos sectores (cada uno vive en su propia sección) -->
+  <section class="section bg-acero-950 text-white">
+    <div class="container-x">
+      <h2 class="text-3xl sm:text-4xl">También somos</h2>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          otrasMarcas.map((m) => (
+            <li>
+              <a
+                href={m.href}
+                class:list={['flex h-full flex-col rounded-lg border-t-4 bg-acero-900 p-6 ring-1 ring-white/10 transition hover:bg-acero-800', m.border]}
+              >
+                <span class="flex h-12 items-center">
+                  <Logo brand={m.id} class="h-10" />
+                </span>
+                <span class="mt-4 flex-1 text-white">{m.text}</span>
+                <span class:list={['mt-4 font-display font-semibold uppercase tracking-wide', m.link]}>{m.cta} →</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    SITE.youtubeFeatured && (
+      <section class="section">
+        <div class="container-x grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <p class="eyebrow">En terreno</p>
+            <h2 class="mt-2 text-4xl sm:text-5xl">Míranos trabajar</h2>
+            <p class="mt-4 text-acero-700">Registramos nuestros trabajos para que veas cómo trabajamos antes de cotizar.</p>
+          </div>
+          <YouTube id={SITE.youtubeFeatured} title="Ararat Maestranza en terreno" />
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBand />
+</BaseLayout>
+
+<script>
+  // Fotos de responsabilidad social: pasa de un eje al siguiente cada 4,5 s; se detiene con el mouse encima.
+  // Busca las diapositivas en cada vuelta porque el contenido del panel las reemplaza al cargar.
+  const INTERVALO_MS = 4500;
+  const zona = document.querySelector<HTMLElement>('[data-contenido="comunidad-diapos"]');
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let pausa = false;
+  zona?.addEventListener('mouseenter', () => (pausa = true));
+  zona?.addEventListener('mouseleave', () => (pausa = false));
+  if (zona && !quieto) {
+    setInterval(() => {
+      const diapos = [...zona.querySelectorAll<HTMLElement>('[data-diapo]')];
+      if (pausa || diapos.length < 2 || document.hidden) return;
+      const actual = Math.max(0, diapos.findIndex((d) => d.hasAttribute('data-activa')));
+      diapos.forEach((d) => d.removeAttribute('data-activa'));
+      diapos[(actual + 1) % diapos.length].setAttribute('data-activa', '');
+    }, INTERVALO_MS);
+  }
+</script>

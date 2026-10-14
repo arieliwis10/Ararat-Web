@@ -1,0 +1,28 @@
+---
+import 'lite-youtube-embed/src/lite-yt-embed.css';
+/**
+ * Video de YouTube con lite-youtube-embed: muestra solo la miniatura y carga el
+ * reproductor real (~500 KB) recién cuando el usuario hace clic.
+ */
+interface Props {
+  id: string;
+  title: string;
+}
+const { id, title } = Astro.props;
+---
+
+<lite-youtube
+  videoid={id}
+  playlabel={`Reproducir: ${title}`}
+  params="rel=0&modestbranding=1"
+  class="overflow-hidden rounded-lg"
+  style={`background-image: url('https://i.ytimg.com/vi/${id}/hqdefault.jpg');`}
+>
+  <a href={`https://www.youtube.com/watch?v=${id}`} class="lty-playbtn" title="Reproducir video">
+    <span class="lyt-visually-hidden">{title}</span>
+  </a>
+</lite-youtube>
+
+<script>
+  import 'lite-youtube-embed';
+</script>

@@ -1,0 +1,8 @@
+node_modules/
+.astro/
+.env
+.env.local
+# dist/ SÍ se versiona: cPanel copia web/dist sin compilar en el servidor
+# (mismo flujo que frontend/dist). Si algún día compilas en el servidor o en
+# GitHub Actions, descomenta la línea siguiente.
+# dist/

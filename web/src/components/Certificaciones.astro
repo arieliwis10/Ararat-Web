@@ -1,0 +1,32 @@
+---
+/** Logos de certificaciones y normas, tal como se mostraban en la web anterior. */
+import { Image } from 'astro:assets';
+import asme from '@/assets/img/cert-asme.png';
+import fia from '@/assets/img/cert-fia.jpg';
+import stanag from '@/assets/img/cert-stanag.jpg';
+import aws from '@/assets/img/cert-aws.png';
+import api from '@/assets/img/cert-api.jpg';
+
+const certs = [
+  { image: asme, alt: 'ASME' },
+  { image: fia, alt: 'FIA Sustainability Accreditation' },
+  { image: stanag, alt: 'STANAG (OTAN)' },
+  { image: aws, alt: 'American Welding Society (AWS)' },
+  { image: api, alt: 'American Petroleum Institute (API)' },
+];
+---
+
+<section class="section border-t border-acero-100 bg-white">
+  <div class="container-x">
+    <h2 class="text-center text-3xl sm:text-4xl">Certificaciones</h2>
+    <ul class="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+      {
+        certs.map((c) => (
+          <li>
+            <Image src={c.image} alt={c.alt} height={96} class="h-16 w-auto object-contain sm:h-24" />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

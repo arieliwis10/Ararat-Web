@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import QuoteForm from '@/components/QuoteForm.astro';
+import { SITE } from '@/config/site';
+import { waLink } from '@/lib/whatsapp';
+import { breadcrumbSchema } from '@/lib/schema';
+
+const crumbs = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Contacto', href: '/contacto/' },
+];
+const direccion = [SITE.address.street, SITE.address.city, SITE.address.region].filter(Boolean).join(', ');
+---
+
+<BaseLayout
+  title="Contacto y cotizaciones"
+  description={`Cotiza servicios de maestranza o arriendo de equipos. WhatsApp ${SITE.contact.phoneDisplay}. ${SITE.hours.label}.`}
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ name: c.name, path: c.href })))]}
+>
+  <PageHeader eyebrow="Contacto" title="Cotiza con nosotros" text="Escríbenos por WhatsApp o déjanos tu solicitud y te respondemos." crumbs={crumbs} />
+
+  <section class="section">
+    <div class="container-x grid gap-12 lg:grid-cols-[1fr_20rem]">
+      <div>
+        <h2 class="mb-6 text-3xl">Formulario de cotización</h2>
+        <QuoteForm />
+      </div>
+
+      <aside class="space-y-6">
+        <div class="rounded-lg bg-acero-950 p-6 text-white">
+          <h2 class="text-2xl">¿Urgente?</h2>
+          <p class="mt-2 text-acero-300">Para emergencias, WhatsApp es lo más rápido.</p>
+          <a href={waLink()} target="_blank" rel="noopener" class="btn-whatsapp mt-4 w-full">WhatsApp</a>
+        </div>
+        <dl class="space-y-4 text-acero-800">
+          <div>
+            <dt class="font-display font-bold uppercase text-acero-500">Teléfono</dt>
+            <dd><a class="hover:text-cian-600" href={`tel:${SITE.contact.phoneDisplay.replace(/\s/g, '')}`}>{SITE.contact.phoneDisplay}</a></dd>
+          </div>
+          <div>
+            <dt class="font-display font-bold uppercase text-acero-500">Correo</dt>
+            <dd><a class="hover:text-cian-600" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a></dd>
+          </div>
+          <div>
+            <dt class="font-display font-bold uppercase text-acero-500">Dirección</dt>
+            <dd>
+              {SITE.address.mapsUrl ? <a class="hover:text-cian-600" href={SITE.address.mapsUrl} target="_blank" rel="noopener">{direccion}</a> : direccion}
+            </dd>
+          </div>
+          <div>
+            <dt class="font-display font-bold uppercase text-acero-500">Horario</dt>
+            <dd>{SITE.hours.label}</dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

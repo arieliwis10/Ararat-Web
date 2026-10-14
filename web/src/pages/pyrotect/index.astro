@@ -1,0 +1,105 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import QuoteForm from '@/components/QuoteForm.astro';
+import Contenido from '@/components/Contenido.astro';
+import PreguntasFrecuentes from '@/components/PreguntasFrecuentes.astro';
+import { SITE } from '@/config/site';
+import { waLink } from '@/lib/whatsapp';
+import { breadcrumbSchema } from '@/lib/schema';
+import fondo from '@/assets/img/video-pyrotect.jpg';
+import CarruselFotos from '@/components/CarruselFotos.astro';
+import expo1 from '@/assets/img/pyrotect-expo-1.jpg';
+import expo2 from '@/assets/img/pyrotect-expo-2.jpg';
+import expo3 from '@/assets/img/pyrotect-expo-3.jpg';
+import expo4 from '@/assets/img/pyrotect-expo-4.jpg';
+import expo5 from '@/assets/img/pyrotect-expo-5.jpg';
+import expo6 from '@/assets/img/pyrotect-expo-6.jpg';
+import expo7 from '@/assets/img/pyrotect-expo-7.jpg';
+import expo8 from '@/assets/img/pyrotect-expo-8.jpg';
+import expo9 from '@/assets/img/pyrotect-expo-9.jpg';
+import expo10 from '@/assets/img/pyrotect-expo-10.jpg';
+import expo11 from '@/assets/img/pyrotect-expo-11.jpg';
+import expo12 from '@/assets/img/pyrotect-expo-12.jpg';
+import expo13 from '@/assets/img/pyrotect-expo-13.jpg';
+import expo14 from '@/assets/img/pyrotect-expo-14.jpg';
+import expo15 from '@/assets/img/pyrotect-expo-15.jpg';
+import expo16 from '@/assets/img/pyrotect-expo-16.jpg';
+
+const crumbs = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Pyrotect', href: '/pyrotect/' },
+];
+const waMessage = 'Hola, quiero cotizar productos Pyrotect.';
+const video = { image: fondo, imageAlt: 'Stand de Pyrotect en una feria de deportes motor', mp4: '/video/pyrotect-feria.mp4', mp4Mobile: '/video/pyrotect-feria-720.mp4' };
+const fotosExpo = [
+  { image: expo1, alt: 'Stand de Pyrotect en una feria de deportes motor, con cascos y trajes en exhibición' },
+  { image: expo2, alt: 'Celda de combustible Pyrotect en la mesa del stand' },
+  { image: expo3, alt: 'Celdas de combustible Pyrotect en exhibición' },
+  { image: expo4, alt: 'Celda de combustible Pyrotect de aluminio' },
+  { image: expo5, alt: 'Celdas de combustible Pyrotect junto a un UTV en exhibición' },
+  { image: expo6, alt: 'Celda de combustible Pyrotect junto a un vehículo de competición' },
+  { image: expo7, alt: 'Celda de combustible Pyrotect instalada en un vehículo de competición' },
+  { image: expo8, alt: 'Detalle de una celda de combustible Pyrotect con sus conexiones' },
+  { image: expo9, alt: 'Auto de competición en exhibición en una feria de deportes motor' },
+  { image: expo10, alt: 'Auto de carrera en exhibición en una feria de deportes motor' },
+  { image: expo11, alt: 'Camioneta de competición en exhibición en una feria de deportes motor' },
+  { image: expo12, alt: 'Chasis tubular de competición en exhibición' },
+  { image: expo13, alt: 'Jaula de seguridad tubular de un vehículo de competición' },
+  { image: expo14, alt: 'Camioneta de competición todo terreno en el desierto' },
+  { image: expo15, alt: 'Camioneta de competición todo terreno levantando polvo en el desierto' },
+  { image: expo16, alt: 'Trofeos y gorras Pyrotect en la premiación de una carrera' },
+];
+const btnPyro = 'btn bg-pyro-500 text-white hover:bg-pyro-600';
+---
+
+<BaseLayout
+  title="Pyrotect: indumentaria y equipamiento racing"
+  description={`${SITE.pyrotect.name}: butacas, cascos, trajes de piloto, celdas de combustible y repuestos para competición. Cotiza por WhatsApp.`}
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ name: c.name, path: c.href })))]}
+  waMessage={waMessage}
+>
+  <PageHeader eyebrow={SITE.pyrotect.name} title="Indumentaria y equipamiento racing" text={`${SITE.pyrotect.tagline}.`} crumbs={crumbs} accent="pyrotect" video={video}>
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a href={waLink(waMessage)} target="_blank" rel="noopener" class="btn-whatsapp">Cotizar por WhatsApp</a>
+      <a href="#cotizar" class={btnPyro}>Formulario de cotización</a>
+    </div>
+  </PageHeader>
+
+  <!-- El catálogo viene del panel web; data/pyrotect.ts es el respaldo si la API no responde. -->
+  <!-- Fotos de exhibición (fijas en src/assets/img/pyrotect-expo-*.jpg) -->
+  <section class="section bg-white" aria-labelledby="exhibicion">
+    <div class="container-x">
+      <h2 id="exhibicion" class="text-3xl sm:text-4xl">En exhibición</h2>
+      <p class="mt-2 text-acero-700">Nuestros productos en ferias y vehículos de competición. Toca una foto para verla en grande.</p>
+      <div class="mt-8">
+        <CarruselFotos label="Pyrotect en exhibición" fotos={fotosExpo} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="catalogo" data-contenido-bloque>
+    <div class="container-x">
+      <h2 id="catalogo" class="text-4xl sm:text-5xl">Catálogo</h2>
+      <p class="mt-2 text-acero-700">Precios, tallas y disponibilidad se confirman al cotizar.</p>
+      <Contenido tipo="pyrotect-categorias" class="mt-10 grid gap-6" />
+    </div>
+  </section>
+
+  <section class="section bg-acero-100" aria-labelledby="destacados" data-contenido-bloque>
+    <div class="container-x">
+      <h2 id="destacados" class="text-3xl sm:text-4xl">Productos destacados</h2>
+      <Contenido tipo="pyrotect-productos" class="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4" />
+    </div>
+  </section>
+
+  <PreguntasFrecuentes seccion="pyrotect" />
+
+  <section id="cotizar" class="section scroll-mt-16">
+    <div class="container-x max-w-3xl">
+      <h2 class="text-3xl sm:text-4xl">Cotiza productos Pyrotect</h2>
+      <p class="mb-8 mt-2 text-acero-700">Indica producto, talla o modelo de vehículo y cantidad.</p>
+      <QuoteForm servicio="pyrotect" mensaje="Quiero cotizar productos Pyrotect: " />
+    </div>
+  </section>
+</BaseLayout>

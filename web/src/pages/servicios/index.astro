@@ -1,0 +1,63 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { SERVICIOS, FABRICACION, FABRICACION_CARD } from '@/data/servicios';
+import { breadcrumbSchema } from '@/lib/schema';
+import Contenido from '@/components/Contenido.astro';
+import { TRABAJOS } from '@/data/trabajos';
+
+const crumbs = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Servicios', href: '/servicios/' },
+];
+const hayProyectos = TRABAJOS.some((t) => t.categoria === FABRICACION_CARD.slug);
+---
+
+<BaseLayout
+  title="Servicios de maestranza"
+  description="Soldadura, torno y mecanizado, flexibles hidráulicos, repuestos industriales e insumos de ferretería para minería, construcción y particulares."
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ name: c.name, path: c.href })))]}
+>
+  <PageHeader
+    eyebrow="Ararat Maestranza"
+    title="Servicios de maestranza"
+    text="Fabricamos, reparamos y abastecemos. En taller o en terreno."
+    crumbs={crumbs}
+  />
+  <section class="section">
+    <div class="container-x grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {SERVICIOS.map((s) => <ServiceCard servicio={s} />)}
+      <ServiceCard servicio={FABRICACION_CARD} href="#fabricacion" cta="Ver fabricación" />
+    </div>
+  </section>
+
+  <section id="fabricacion" class="section scroll-mt-16 bg-acero-100">
+    <div class="container-x">
+      <p class="eyebrow">Ararat Maestranza</p>
+      <h2 class="mt-2 text-4xl sm:text-5xl">Fabricación y proyectos</h2>
+      <p class="mt-3 max-w-2xl text-acero-700">
+        Además de los servicios de taller, desarrollamos y fabricamos equipos y estructuras a pedido.
+      </p>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          FABRICACION.map((f) => (
+            <article class="rounded-lg bg-white p-6 shadow-sm ring-1 ring-acero-100">
+              <h3 class="text-2xl text-acero-900">{f.title}</h3>
+              <ul class="mt-3 list-disc space-y-1 pl-5 text-acero-700 marker:text-cian-500">
+                {f.items.map((i) => <li>{i}</li>)}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+      <div data-contenido-bloque hidden={!hayProyectos}>
+        <h3 class="mt-12 text-3xl">Proyectos realizados</h3>
+        <Contenido tipo="trabajos-tarjetas" categoria={FABRICACION_CARD.slug} class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" />
+      </div>
+      <a href="/contacto/?servicio=otro" class="btn-primary mt-8">Cotizar un proyecto</a>
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

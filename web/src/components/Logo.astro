@@ -1,0 +1,23 @@
+---
+/** Logos oficiales de las tres marcas, en versión para fondo oscuro (PNG con transparencia). */
+import { Image } from 'astro:assets';
+import logoArarat from '@/assets/img/logo-ararat.png';
+import logoKairos from '@/assets/img/logo-kairos.png';
+import logoPyrotect from '@/assets/img/logo-pyrotect.png';
+
+interface Props {
+  brand?: 'ararat' | 'kairos' | 'pyrotect';
+  /** Clases de alto de la imagen (p. ej. 'h-8 sm:h-10') */
+  class?: string;
+}
+const { brand = 'ararat', class: cls = 'h-10' } = Astro.props;
+
+const logos = {
+  ararat: { src: logoArarat, alt: 'Ararat Mining & Technology' },
+  kairos: { src: logoKairos, alt: 'Kairos Arriendos' },
+  pyrotect: { src: logoPyrotect, alt: 'Pyrotect Sudamérica' },
+};
+const logo = logos[brand];
+---
+
+<Image src={logo.src} alt={logo.alt} width={480} class:list={['w-auto', cls]} />

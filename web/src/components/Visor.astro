@@ -1,0 +1,111 @@
+---
+/**
+ * Visor de fotos (y videos) de todo el sitio (va una vez, en BaseLayout).
+ *
+ * Se abre al tocar cualquier elemento con `data-visor`. Las fotos salen del
+ * `data-visor-fotos` (JSON) del propio elemento o de su ancestro más cercano, y
+ * `data-visor-indice` dice en cuál partir. Como escucha los clics en el documento,
+ * funciona también con el contenido que se dibuja después (ver lib/contenido.ts).
+ * Un elemento con `video: true` se reproduce en vez de mostrarse como imagen.
+ * Sin JS, cada miniatura es un enlace normal a su foto.
+ */
+const boton =
+  'absolute inline-flex size-11 items-center justify-center rounded-full bg-acero-950/70 text-white transition hover:bg-acero-950';
+---
+
+<dialog
+  class="m-auto w-[min(94vw,1000px)] max-w-none overflow-visible bg-transparent p-0 backdrop:bg-black/85"
+  aria-label="Visor de fotos"
+  data-visor-dialogo
+>
+  <figure class="overflow-hidden rounded-lg bg-acero-950 text-white">
+    <div class="relative bg-black">
+      <img alt="" class="max-h-[72dvh] w-full object-contain" data-visor-img />
+      <video class="max-h-[72dvh] w-full bg-black" controls playsinline preload="none" hidden data-visor-video></video>
+      <button type="button" class:list={[boton, 'right-2 top-2']} aria-label="Cerrar" data-visor-cerrar>
+        <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"></path></svg>
+      </button>
+      <button type="button" class:list={[boton, 'left-2 top-1/2 -translate-y-1/2']} aria-label="Foto anterior" data-visor-anterior>
+        <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+      </button>
+      <button type="button" class:list={[boton, 'right-2 top-1/2 -translate-y-1/2']} aria-label="Foto siguiente" data-visor-siguiente>
+        <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+      </button>
+    </div>
+    <figcaption class="max-h-[22dvh] overflow-y-auto p-4">
+      <div class="flex items-baseline justify-between gap-4">
+        <p class="font-display text-xl font-bold uppercase tracking-wide" data-visor-titulo-el></p>
+        <p class="shrink-0 text-sm text-acero-300" data-visor-contador></p>
+      </div>
+      <p class="mt-1 whitespace-pre-line text-sm text-acero-300" data-visor-texto-el></p>
+    </figcaption>
+  </figure>
+</dialog>
+
+<script>
+  const dialogo = document.querySelector<HTMLDialogElement>('[data-visor-dialogo]');
+  const parte = <T extends HTMLElement>(nombre: string) => dialogo?.querySelector<T>(`[data-visor-${nombre}]`);
+  const img = parte<HTMLImageElement>('img');
+  const video = parte<HTMLVideoElement>('video');
+  const anterior = parte('anterior');
+  const siguiente = parte('siguiente');
+
+  if (dialogo && img && video && typeof dialogo.showModal === 'function') {
+    let fotos: { src: string; alt: string; video?: boolean }[] = [];
+    let actual = 0;
+
+    const detenerVideo = () => {
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    };
+
+    const mostrar = (indice: number) => {
+      actual = (indice + fotos.length) % fotos.length;
+      const elemento = fotos[actual];
+      img.hidden = Boolean(elemento.video);
+      video.hidden = !elemento.video;
+      if (elemento.video) {
+        video.src = elemento.src;
+        video.setAttribute('aria-label', elemento.alt);
+        video.play().catch(() => {
+          /* sin autoplay: queda con sus controles */
+        });
+      } else {
+        detenerVideo();
+        img.src = elemento.src;
+        img.alt = elemento.alt;
+      }
+      parte('contador')!.textContent = fotos.length > 1 ? `${actual + 1} / ${fotos.length}` : '';
+    };
+
+    document.addEventListener('click', (e) => {
+      const disparador = (e.target as Element).closest<HTMLElement>('[data-visor]');
+      const grupo = disparador?.closest<HTMLElement>('[data-visor-fotos]');
+      if (!disparador || !grupo) return;
+      try {
+        fotos = JSON.parse(grupo.dataset.visorFotos ?? '[]');
+      } catch {
+        return;
+      }
+      if (!fotos.length) return;
+      e.preventDefault();
+      parte('titulo-el')!.textContent = grupo.dataset.visorTitulo ?? '';
+      parte('texto-el')!.textContent = grupo.dataset.visorTexto ?? '';
+      anterior!.hidden = siguiente!.hidden = fotos.length < 2;
+      mostrar(Number(disparador.dataset.visorIndice ?? 0));
+      dialogo.showModal();
+    });
+
+    anterior?.addEventListener('click', () => mostrar(actual - 1));
+    siguiente?.addEventListener('click', () => mostrar(actual + 1));
+    parte('cerrar')?.addEventListener('click', () => dialogo.close());
+    dialogo.addEventListener('close', detenerVideo);
+    // Clic en el fondo oscuro (fuera de la foto) cierra el visor; Escape ya lo cierra el navegador.
+    dialogo.addEventListener('click', (e) => e.target === dialogo && dialogo.close());
+    dialogo.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') mostrar(actual - 1);
+      if (e.key === 'ArrowRight') mostrar(actual + 1);
+    });
+  }
+</script>

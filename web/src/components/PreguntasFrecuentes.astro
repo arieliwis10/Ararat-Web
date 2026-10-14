@@ -1,0 +1,23 @@
+---
+/**
+ * Preguntas frecuentes de una página, administradas en el panel web.
+ * Si la página no tiene preguntas, la sección completa no se muestra.
+ */
+import Contenido from '@/components/Contenido.astro';
+import { preguntasDe } from '@/lib/contenido';
+import { contenidoLocal } from '@/data/contenido-fallback';
+
+interface Props {
+  /** Slug de un servicio, 'kairos' o 'pyrotect' (las "páginas" del panel) */
+  seccion: string;
+}
+const { seccion } = Astro.props;
+const hayPreguntas = preguntasDe(await contenidoLocal(), seccion).length > 0;
+---
+
+<section class="section" data-contenido-bloque hidden={!hayPreguntas}>
+  <div class="container-x max-w-3xl">
+    <h2 class="text-3xl sm:text-4xl">Preguntas frecuentes</h2>
+    <Contenido tipo="preguntas" categoria={seccion} class="mt-6 divide-y divide-acero-100 border-y border-acero-100" />
+  </div>
+</section>

@@ -1,0 +1,81 @@
+---
+import { SITE } from '@/config/site';
+import { SERVICIOS } from '@/data/servicios';
+import { CATEGORIAS } from '@/data/pyrotect';
+import { waLink } from '@/lib/whatsapp';
+import Logo from '@/components/Logo.astro';
+
+const year = new Date().getFullYear();
+const social = Object.entries(SITE.social).filter(([, url]) => url);
+const labels: Record<string, string> = { youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook' };
+const direccion = [SITE.address.street, SITE.address.city, SITE.address.region].join(', ');
+---
+
+<footer class="bg-acero-950 pb-24 pt-14 text-white sm:pb-14">
+  <div class="container-x grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+    <div>
+      <a href="/" class="inline-block transition-opacity hover:opacity-80" aria-label={`${SITE.name}, ir al inicio`}>
+        <Logo class="h-10" />
+      </a>
+      <p class="mt-4 text-sm leading-relaxed">{SITE.tagline}.</p>
+      <p class="mt-2 text-sm">{SITE.hours.label}</p>
+    </div>
+
+    <div>
+      <h2 class="text-lg text-white"><a class="hover:text-cian-500" href="/servicios/">Servicios Ararat</a></h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        {SERVICIOS.map((s) => <li><a class="hover:text-cian-500" href={`/servicios/${s.slug}/`}>{s.title}</a></li>)}
+        <li><a class="hover:text-cian-500" href="/responsabilidad-social/">Responsabilidad social</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-lg text-white"><a class="hover:text-kairos-400" href="/kairos/">{SITE.kairos.name}</a></h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a class="hover:text-kairos-400" href="/kairos/">Catálogo de equipos</a></li>
+        <li><a class="hover:text-kairos-400" href="/contacto/?servicio=arriendo">Cotizar arriendo</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-lg text-white"><a class="hover:text-pyro-400" href="/pyrotect/">{SITE.pyrotect.name}</a></h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        {CATEGORIAS.map((c) => <li><a class="hover:text-pyro-400" href={`/pyrotect/#${c.slug}`}>{c.name}</a></li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-lg text-white"><a class="hover:text-cian-500" href="/contacto/">Contacto</a></h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a class="hover:text-cian-500" href={waLink()} target="_blank" rel="noopener">WhatsApp {SITE.contact.phoneDisplay}</a></li>
+        <li><a class="hover:text-cian-500" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a></li>
+        <li>
+          {
+            SITE.address.mapsUrl ? (
+              <a class="hover:text-cian-500" href={SITE.address.mapsUrl} target="_blank" rel="noopener">
+                {[SITE.address.street, SITE.address.city].filter(Boolean).join(', ')}, {SITE.address.region}
+              </a>
+            ) : (
+              <span>{[SITE.address.street, SITE.address.city].filter(Boolean).join(', ')}, {SITE.address.region}</span>
+            )
+          }
+        </li>
+        {social.map(([key, url]) => <li><a class="hover:text-cian-500" href={url} target="_blank" rel="noopener">{labels[key] ?? key}</a></li>)}
+      </ul>
+      {/* Mapa de la ficha de Google. Se carga recién al acercarse al pie (loading="lazy"). */}
+      <div class="mt-4 max-w-xs overflow-hidden rounded-lg bg-acero-900 ring-1 ring-white/10">
+        <iframe
+          src={SITE.address.mapsEmbedUrl}
+          title={`Mapa: ${SITE.name}, ${direccion}`}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen
+          class="block aspect-[4/3] w-full"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-x mt-12 border-t border-white/10 pt-6 text-xs text-white">
+    © {year} {SITE.legalName}. Todos los derechos reservados.
+  </div>
+</footer>

@@ -1,0 +1,74 @@
+---
+/**
+ * Video de fondo para una portada. Va dentro de una sección con `relative isolate overflow-hidden`.
+ * - La imagen (<Picture>, AVIF/WebP) es lo que se pinta primero → buen LCP.
+ * - El MP4 se adjunta por JS solo si el usuario no pidió menos movimiento ni
+ *   ahorro de datos; cuando empieza a reproducirse, aparece con un fundido.
+ * - Si el archivo de video no existe, simplemente queda la imagen.
+ * Un solo video de fondo por página.
+ */
+import { Picture, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  /** Imagen inicial: un cuadro del mismo video */
+  image: ImageMetadata;
+  imageAlt: string;
+  /** Rutas dentro de /public */
+  videoMp4: string;
+  videoMp4Mobile?: string;
+}
+
+const { image, imageAlt, videoMp4, videoMp4Mobile } = Astro.props;
+const poster = await getImage({ src: image, width: 1280, format: 'webp', quality: 60 });
+---
+
+<!-- Capas, de atrás hacia adelante: imagen inicial, video y velo oscuro (mantiene legible el texto blanco). -->
+<div class="absolute inset-0 -z-10">
+  <Picture
+    src={image}
+    alt={imageAlt}
+    formats={['avif', 'webp']}
+    widths={[640, 960, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 size-full object-cover"
+  />
+  <video
+    class="absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-700"
+    muted
+    loop
+    playsinline
+    autoplay
+    preload="none"
+    poster={poster.src}
+    aria-hidden="true"
+    data-hero-video
+    data-src={videoMp4}
+    data-src-mobile={videoMp4Mobile}></video>
+  <div class="absolute inset-0 bg-linear-to-t from-acero-950 via-acero-950/30 to-acero-950/15"></div>
+</div>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const slow = conn?.saveData || /(^|-)2g$/.test(conn?.effectiveType ?? '');
+
+  if (video && !reduce && !slow) {
+    const mobile = window.matchMedia('(max-width: 767px)').matches;
+    const src = (mobile && video.dataset.srcMobile) || video.dataset.src;
+    if (src) {
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/mp4';
+      video.append(source);
+      video.addEventListener('playing', () => video.classList.remove('opacity-0'), { once: true });
+      video.load();
+      video.play().catch(() => {
+        /* autoplay bloqueado: queda la imagen */
+      });
+    }
+  }
+</script>

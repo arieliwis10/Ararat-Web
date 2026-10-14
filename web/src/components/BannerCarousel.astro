@@ -1,0 +1,85 @@
+---
+/**
+ * Carrusel de banners a ancho completo (una diapositiva a la vez), con CSS scroll-snap.
+ * El JS agrega las flechas y el avance automático, que se detiene al interactuar
+ * y no corre si el usuario pidió menos movimiento.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  label: string;
+  slides: { image: ImageMetadata; alt: string; href?: string }[];
+  /** true en el primer banner de la página (mejora el LCP) */
+  eager?: boolean;
+}
+const { label, slides, eager = false } = Astro.props;
+const arrow =
+  'absolute top-1/2 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-acero-950/40 text-white/80 transition hover:bg-acero-950/70 hover:text-white sm:size-11';
+---
+
+<div class="relative mx-auto max-w-[1920px] bg-acero-950" role="region" aria-roledescription="carrusel" aria-label={label} data-banner>
+  <div class="carousel-track flex snap-x snap-mandatory overflow-x-auto scroll-smooth" data-track tabindex="0">
+    {
+      slides.map((s, i) => {
+        const img = (
+          <Image
+            src={s.image}
+            alt={s.alt}
+            widths={[640, 960, 1280, 1920]}
+            sizes="(min-width: 1920px) 1920px, 100vw"
+            loading={eager && i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={eager && i === 0 ? 'high' : undefined}
+            class="aspect-[3/1] w-full object-cover"
+          />
+        );
+        return s.href ? (
+          <a href={s.href} class="block w-full shrink-0 snap-start">{img}</a>
+        ) : (
+          <div class="w-full shrink-0 snap-start">{img}</div>
+        );
+      })
+    }
+  </div>
+  {
+    slides.length > 1 && (
+      <>
+        <button type="button" class:list={[arrow, 'left-1 sm:left-4']} aria-label="Banner anterior" data-prev>
+          <svg viewBox="0 0 24 24" class="size-5 sm:size-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <button type="button" class:list={[arrow, 'right-1 sm:right-4']} aria-label="Banner siguiente" data-next>
+          <svg viewBox="0 0 24 24" class="size-5 sm:size-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      </>
+    )
+  }
+</div>
+
+<script>
+  const AUTOPLAY_MS = 6000;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-banner]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-track]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-next]');
+    if (!track || !prev || !next) return;
+
+    // Avanza una diapositiva; al llegar al final vuelve a la primera (y viceversa).
+    const go = (dir: 1 | -1) => {
+      const max = track.scrollWidth - track.clientWidth;
+      let left = track.scrollLeft + dir * track.clientWidth;
+      if (left > max + 4) left = 0;
+      if (left < -4) left = max;
+      track.scrollTo({ left });
+    };
+
+    let timer: number | undefined;
+    const stop = () => window.clearInterval(timer);
+    if (!reduce) timer = window.setInterval(() => go(1), AUTOPLAY_MS);
+
+    prev.addEventListener('click', () => (stop(), go(-1)));
+    next.addEventListener('click', () => (stop(), go(1)));
+    ['pointerdown', 'wheel', 'keydown', 'focusin'].forEach((ev) => track.addEventListener(ev, stop, { passive: true }));
+  });
+</script>

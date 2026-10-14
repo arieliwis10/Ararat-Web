@@ -1,0 +1,27 @@
+---
+/**
+ * Zona con contenido del panel web (trabajos o equipos).
+ * En el build se dibuja con el respaldo de src/data; en el navegador,
+ * scripts/contenido-cliente.ts la reemplaza con lo publicado en el panel.
+ *
+ * Para que un título o una sección desaparezcan cuando la zona queda vacía,
+ * ponles `data-contenido-bloque` (y `hidden` si el respaldo no tiene elementos).
+ */
+import { renderRegion, type TipoRegion } from '@/lib/contenido';
+import { contenidoLocal } from '@/data/contenido-fallback';
+
+interface Props {
+  tipo: TipoRegion;
+  /** Solo trabajos de esta categoría (slug de servicio o 'fabricacion') */
+  categoria?: string;
+  class?: string;
+}
+const { tipo, categoria, class: cls } = Astro.props;
+const { html } = renderRegion(tipo, await contenidoLocal(), categoria);
+---
+
+<div class={cls} data-contenido={tipo} data-categoria={categoria} set:html={html} />
+
+<script>
+  import '@/scripts/contenido-cliente';
+</script>

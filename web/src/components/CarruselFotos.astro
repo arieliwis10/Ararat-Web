@@ -1,0 +1,38 @@
+---
+/**
+ * Carrusel de fotos fijas (no del panel). Cada foto se abre en grande en el visor del sitio
+ * (components/Visor.astro), que recorre todas las del carrusel.
+ */
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Carousel from '@/components/Carousel.astro';
+
+interface Props {
+  /** Nombre del carrusel (accesibilidad) y título del visor */
+  label: string;
+  fotos: { image: ImageMetadata; alt: string }[];
+}
+const { label, fotos } = Astro.props;
+const grandes = await Promise.all(fotos.map((f) => getImage({ src: f.image, width: Math.min(1600, f.image.width), format: 'webp' })));
+const paraVisor = JSON.stringify(fotos.map((f, i) => ({ src: grandes[i].src, alt: f.alt })));
+---
+
+<div data-visor-fotos={paraVisor} data-visor-titulo={label}>
+  <Carousel label={label}>
+    {
+      fotos.map((f, i) => (
+        <div>
+          <a href={grandes[i].src} class="group block overflow-hidden rounded-lg" data-visor data-visor-indice={i}>
+            <Image
+              src={f.image}
+              alt={f.alt}
+              widths={[400, 640, 800]}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 85vw"
+              class="aspect-[4/3] w-full object-cover transition duration-300 group-hover:scale-105"
+            />
+          </a>
+        </div>
+      ))
+    }
+  </Carousel>
+</div>

@@ -1,0 +1,73 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import Contenido from '@/components/Contenido.astro';
+import QuoteForm from '@/components/QuoteForm.astro';
+import PreguntasFrecuentes from '@/components/PreguntasFrecuentes.astro';
+import { SITE } from '@/config/site';
+import { waLink } from '@/lib/whatsapp';
+import { breadcrumbSchema } from '@/lib/schema';
+import fondo from '@/assets/img/video-kairos.jpg';
+
+const crumbs = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Arriendos Kairos', href: '/kairos/' },
+];
+const waMessage = 'Hola, quiero consultar disponibilidad de equipos en arriendo.';
+const video = { image: fondo, imageAlt: 'Grúas horquilla de Kairos Arriendos', mp4: '/video/kairos.mp4', mp4Mobile: '/video/kairos-720.mp4' };
+
+const pasos = [
+  { t: 'Elige el equipo', d: 'Revisa el catálogo o cuéntanos qué trabajo vas a hacer.' },
+  { t: 'Consulta fechas', d: 'Te confirmamos disponibilidad y precio por día.' },
+  { t: 'Retira o recibe', d: 'Coordina el retiro o despacho a tu obra.' },
+];
+---
+
+<BaseLayout
+  title="Arriendo de equipos y maquinaria por día"
+  description={`${SITE.kairos.name}: arriendo de maquinaria por día. Grúa horquilla de 2,5 toneladas y autocargable para bins.`}
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ name: c.name, path: c.href })))]}
+  waMessage={waMessage}
+>
+  <PageHeader eyebrow={SITE.kairos.name} title="Arriendo de equipos y maquinaria por día" text={`${SITE.kairos.tagline}.`} crumbs={crumbs} accent="kairos" video={video}>
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a href={waLink(waMessage)} target="_blank" rel="noopener" class="btn-whatsapp">Consultar disponibilidad</a>
+      <a href="#cotizar" class="btn bg-kairos-500 text-acero-950 hover:bg-kairos-400">Cotizar arriendo</a>
+    </div>
+  </PageHeader>
+
+  <section id="como-arrendar" class="scroll-mt-16 border-b border-acero-100 bg-white">
+    <ol class="container-x grid gap-6 py-10 sm:grid-cols-3">
+      {
+        pasos.map((p, i) => (
+          <li class="flex gap-4">
+            <span class="font-display text-4xl font-bold text-kairos-500">{i + 1}</span>
+            <div>
+              <p class="font-display text-xl font-bold uppercase">{p.t}</p>
+              <p class="text-sm text-acero-700">{p.d}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- El catálogo viene del panel web; data/kairos.ts es el respaldo si la API no responde. -->
+  <section class="section bg-acero-950 text-white" aria-labelledby="catalogo">
+    <div class="container-x">
+      <h2 id="catalogo" class="text-4xl sm:text-5xl">Catálogo</h2>
+      <p class="mt-2 text-acero-300">Precios y disponibilidad sujetos a confirmación. Consulta por WhatsApp para respuesta inmediata.</p>
+      <Contenido tipo="equipos-catalogo" />
+    </div>
+  </section>
+
+  <PreguntasFrecuentes seccion="kairos" />
+
+  <section id="cotizar" class="section scroll-mt-16">
+    <div class="container-x max-w-3xl">
+      <h2 class="text-3xl sm:text-4xl">Cotiza tu arriendo</h2>
+      <p class="mb-8 mt-2 text-acero-700">Indica equipo, fechas y lugar de uso.</p>
+      <QuoteForm servicio="arriendo" />
+    </div>
+  </section>
+</BaseLayout>

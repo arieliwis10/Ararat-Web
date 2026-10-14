@@ -1,0 +1,19 @@
+---
+/** Aviso de que el portafolio publicado es parcial por acuerdos de confidencialidad con clientes. */
+interface Props {
+  class?: string;
+}
+const { class: cls = '' } = Astro.props;
+---
+
+<aside class:list={['flex max-w-3xl gap-3 rounded-lg border-l-4 border-cian-500 bg-white p-4 ring-1 ring-acero-100', cls]}>
+  <svg viewBox="0 0 24 24" class="mt-0.5 size-6 shrink-0 text-cian-600" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <rect x="5" y="11" width="14" height="9" rx="2"></rect>
+    <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke-linecap="round"></path>
+  </svg>
+  <p class="text-sm leading-relaxed text-acero-700">
+    <strong class="text-acero-900">Esto es solo una muestra de nuestro trabajo.</strong>
+    La mayor parte de los proyectos que desarrollamos está protegida por acuerdos de confidencialidad con nuestros
+    clientes, por lo que no podemos publicarlos.
+  </p>
+</aside>

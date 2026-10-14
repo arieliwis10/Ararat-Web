@@ -1,0 +1,46 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import Contenido from '@/components/Contenido.astro';
+import NotaConfidencialidad from '@/components/NotaConfidencialidad.astro';
+import YouTube from '@/components/YouTube.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { SITE } from '@/config/site';
+import { breadcrumbSchema } from '@/lib/schema';
+
+const crumbs = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Trabajos', href: '/trabajos/' },
+];
+---
+
+<BaseLayout
+  title="Trabajos realizados"
+  description="Trabajos y proyectos especiales realizados por Ararat: tótem solar, soldadura, mecanizado, flexibles hidráulicos y reparaciones en terreno."
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ name: c.name, path: c.href })))]}
+>
+  <PageHeader eyebrow="Portafolio" title="Trabajos realizados" text="Una muestra de lo que hacemos en taller y en terreno." crumbs={crumbs} />
+
+  <!-- Trabajos marcados como "destacado" en el panel web: en grande, con su galería. -->
+  <Contenido tipo="trabajos-destacados" />
+
+  <section class="section">
+    <div class="container-x">
+      <NotaConfidencialidad />
+      <Contenido tipo="trabajos-tarjetas" class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" />
+    </div>
+  </section>
+
+  {
+    SITE.youtubeFeatured && (
+      <section class="section bg-acero-100">
+        <div class="container-x max-w-4xl">
+          <h2 class="mb-6 text-3xl sm:text-4xl">En video</h2>
+          <YouTube id={SITE.youtubeFeatured} title="Trabajos de Ararat Maestranza" />
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBand title="¿Necesitas algo parecido?" />
+</BaseLayout>
