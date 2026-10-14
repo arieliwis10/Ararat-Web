@@ -25,8 +25,11 @@ Público: industria (minería, construcción) y particulares. Objetivo: cotizaci
   - URL de la API: `PUBLIC_API_URL` en `web/.env` / `web/.env.production`.
 
 ## Hosting y deploy (restricciones reales)
-- Esta carpeta es un paquete sin git. El repo real (backend Django completo, `frontend/`, `.cpanel.yml`) es
-  `Desktop\AraratSpa`; ahí se integran `web/` y las apps de `backend/` siguiendo `LEEME.md`.
+- Repo propio y aparte de la app: `github.com/arieliwis10/Ararat-Web` (2026-10-14). NO se integra en AraratSpa.
+  - `servidor/` → proyecto Django de producción (Python App de cPanel en `web.araratchile.com`, base MySQL
+    `araratch_web`, `.env` propio). El deploy copia `servidor/` y `backend/{cotizaciones,contenido}` a
+    `/home/araratch/web.araratchile.com/` y `web/dist` a `public_html` (ver `.cpanel.yml` y `deploy/GUIA-CPANEL.md`).
+  - `PUBLIC_API_URL=https://web.araratchile.com/public`. Panel en `https://web.araratchile.com/web-admin/`.
 - cPanel compartido (cuenta `araratch`), Python 3.12 vía Passenger. **No hay Node en producción.**
 - Deploy con cPanel Git Version Control + `.cpanel.yml` desde la rama `main`.
 - `backend/*` → `/home/araratch/api.araratchile.com/` (pip install, migrate, collectstatic, `tmp/restart.txt`).

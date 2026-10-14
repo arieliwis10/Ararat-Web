@@ -1,0 +1,25 @@
+---
+# Deploy de la web pública de Ararat (repositorio aparte de la app interna AraratSpa).
+# cPanel → Git Version Control → este repositorio → "Deploy HEAD Commit".
+#
+# 1) Servidor (panel, API y cotizaciones) → Python App de web.araratchile.com
+# 2) Web estática (web/dist, compilada en el PC con npm run build) → public_html
+#
+# Nunca borra archivos: cp agrega y sobrescribe. El .env y la carpeta media/ del servidor no se tocan.
+deployment:
+  tasks:
+    - export APPROOT=/home/araratch/web.araratchile.com/
+    - export VENV=/home/araratch/virtualenv/web.araratchile.com/3.12
+    - export WEBPATH=/home/araratch/public_html/
+    # --- 1) Servidor ---
+    - /bin/mkdir -p $APPROOT
+    - /bin/cp -R servidor/. $APPROOT
+    - /bin/cp -R backend/cotizaciones backend/contenido $APPROOT
+    - source $VENV/bin/activate && cd $APPROOT && pip install -r requirements.txt --quiet
+    - source $VENV/bin/activate && cd $APPROOT && python manage.py migrate --noinput
+    - source $VENV/bin/activate && cd $APPROOT && python manage.py collectstatic --noinput
+    - /bin/mkdir -p $APPROOT/tmp && /bin/touch $APPROOT/tmp/restart.txt
+    # --- 2) Web estática ---
+    # Solo copia si el build es válido y no trae nada que pise lo que ya existe en public_html
+    # (una carpeta api/ ni un .htaccess, que se mantiene a mano).
+    - if [ -f web/dist/index.html ] && [ ! -e web/dist/api ] && [ ! -e web/dist/.htaccess ]; then /bin/cp -R web/dist/. "$WEBPATH"; else echo "web/dist ausente o inseguro: NO se copió la web"; fi

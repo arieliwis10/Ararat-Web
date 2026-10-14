@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+*.sqlite3
+.env
+servidor/media/
+servidor/staticfiles/
+servidor/var/
+
+# Respaldo del contenido del panel (se sube a mano al servidor, no por git)
+deploy/contenido-inicial/
+
+# Editor / sistema
+.vscode/
+Thumbs.db
+.DS_Store
