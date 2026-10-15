@@ -1,0 +1,58 @@
+---
+/** "Nuestros recursos" de Ararat: se usa al final de la portada y en la página Nosotros. */
+interface Props {
+  /** Sobre fondo oscuro (página Nosotros) */
+  oscuro?: boolean;
+}
+const { oscuro = false } = Astro.props;
+
+const recursos = [
+  {
+    titulo: 'Corte CNC',
+    texto: 'Máquinas de corte CNC para piezas exactas y repetibles, desde una unidad hasta producción en serie.',
+  },
+  {
+    titulo: 'Plegado CNC',
+    texto: 'Plegadora CNC para doblar planchas de acero con precisión y terminaciones parejas.',
+  },
+  {
+    titulo: 'Metalmecánica',
+    texto: 'Torno y fresadora para fabricar piezas a medida y recuperar componentes desgastados.',
+  },
+  {
+    titulo: 'Ingeniería y diseño 3D',
+    texto: 'Departamento de ingeniería y diseño integrado al taller: modelamos y calculamos en 3D antes de fabricar.',
+  },
+  {
+    titulo: 'Inteligencia artificial aplicada',
+    texto: 'Herramientas de inteligencia artificial que agilizan el diseño y el cálculo, siempre revisadas por nuestros profesionales.',
+  },
+  {
+    titulo: 'Equipo profesional',
+    texto: 'Profesionales capacitados y con experiencia, tanto en ingeniería como en taller.',
+  },
+];
+---
+
+<div>
+  <h3 class:list={['text-3xl sm:text-4xl', oscuro ? 'text-white' : 'text-acero-900']}>Nuestros recursos</h3>
+  <p class:list={['mt-3 max-w-2xl text-lg', oscuro ? 'text-acero-300' : 'text-acero-700']}>
+    Trabajamos con tecnología de punta y un equipo que une ingeniería y taller, para pasar del diseño a la pieza
+    terminada sin intermediarios.
+  </p>
+  <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      recursos.map((r) => (
+        <li
+          class:list={[
+            'rounded-lg border-t-4 border-cian-500 p-5',
+            oscuro ? 'bg-acero-900 ring-1 ring-white/10' : 'bg-white shadow-sm ring-1 ring-acero-100',
+          ]}
+        >
+          <p class:list={['font-display text-xl font-bold uppercase tracking-wide', oscuro ? 'text-white' : 'text-acero-900']}>{r.titulo}</p>
+          <p class:list={['mt-2 text-sm leading-relaxed', oscuro ? 'text-acero-300' : 'text-acero-700']}>{r.texto}</p>
+        </li>
+      ))
+    }
+  </ul>
+</div>

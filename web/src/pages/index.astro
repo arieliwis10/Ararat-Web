@@ -9,6 +9,9 @@ import NotaConfidencialidad from '@/components/NotaConfidencialidad.astro';
 import Certificaciones from '@/components/Certificaciones.astro';
 import YouTube from '@/components/YouTube.astro';
 import CtaBand from '@/components/CtaBand.astro';
+import RecursosArarat from '@/components/RecursosArarat.astro';
+import { Picture } from 'astro:assets';
+import fotoEquipo from '@/assets/img/nosotros-2.jpg';
 import { SITE } from '@/config/site';
 import { SERVICIOS, FABRICACION, FABRICACION_CARD } from '@/data/servicios';
 import { waLink } from '@/lib/whatsapp';
@@ -183,6 +186,33 @@ const valores = [
   }
 
   <CtaBand />
+
+  <!-- Nosotros: último bloque antes del pie -->
+  <section id="nosotros" class="section scroll-mt-16 bg-white">
+    <div class="container-x">
+      <div class="grid items-center gap-10 lg:grid-cols-2">
+        <div>
+          <p class="eyebrow">Nosotros</p>
+          <h2 class="mt-2 text-4xl sm:text-5xl">Ingeniería y fabricación en un solo lugar</h2>
+          <p class="mt-4 text-lg leading-relaxed text-acero-700">
+            Ararat es una maestranza de soluciones industriales con atención 24/7. Integramos ingeniería, diseño y
+            fabricación: desde el cálculo en 3D hasta la pieza terminada, en nuestro taller o directamente en tu faena.
+          </p>
+        </div>
+        <Picture
+          src={fotoEquipo}
+          alt="Equipo de Ararat frente al taller"
+          formats={['avif', 'webp']}
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          class="aspect-[3/2] w-full rounded-lg object-cover object-[50%_35%]"
+        />
+      </div>
+      <div class="mt-14">
+        <RecursosArarat />
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <script>

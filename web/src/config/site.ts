@@ -15,7 +15,7 @@ export const SITE = {
     // Formato internacional sin "+" ni espacios (requisito de wa.me).
     whatsapp: '56999405462',
     phoneDisplay: '+56 9 9940 5462',
-    email: 'ventas@araratchile.com',
+    email: 'notificaciones@araratchile.com',
   },
 
   address: {

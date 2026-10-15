@@ -14,9 +14,11 @@ export default defineConfig({
     format: 'directory',
     inlineStylesheets: 'auto',
   },
-  // La página Comunidad pasó a llamarse Responsabilidad social: la dirección antigua redirige.
+  // Direcciones antiguas: Comunidad pasó a llamarse Responsabilidad social, y Nosotros ahora es
+  // un bloque al final de la portada.
   redirects: {
     '/comunidad/': '/responsabilidad-social/',
+    '/nosotros/': '/#nosotros',
   },
   // Las imágenes de src/assets se optimizan en build con sharp (AVIF/WebP + srcset).
   prefetch: {
@@ -25,7 +27,8 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/404') && !page.includes('/comunidad/'),
+      filter: (page) =>
+        !page.includes('/404') && !page.includes('/comunidad/') && !page.endsWith('araratchile.com/nosotros/'),
       changefreq: 'monthly',
       priority: 0.7,
     }),
