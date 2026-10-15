@@ -95,6 +95,19 @@ TRABAJOS = [
         ],
     },
     {
+        "titulo": "Mantención de molino SAG",
+        "categoria": Trabajo.Categoria.FABRICACION,
+        "resumen": "Cambio de revestimientos y mantención mecánica del molino SAG de una faena minera.",
+        "descripcion": "Realizamos trabajos de mantención en el molino SAG de una faena minera, durante detenciones programadas y con la documentación que exige la minera.\n\n• Cambio de revestimientos (relining): medición previa de espesores, retiro y montaje de piezas del manto, tapas, parrillas y levantadores de pulpa con máquina relainera, y torque y reapriete de pernos según fabricante.\n• Pernos de revestimiento: control de fugas, reapriete programado y reemplazo de pernos cortados.\n• Lifters: medición de perfil y altura para definir su cambio y mantener la molienda.\n• Descansos y trunnion: control de temperatura, presión de aceite, filtros y sellos.\n• Accionamiento: alineamiento, juego entre dientes, lubricación y termografía de corona y piñón.\n\nCada trabajo se ejecuta con PTS, análisis de riesgo (AST) en terreno e informe técnico con mediciones, fotos y recomendaciones.\n\nFotos referenciales de otras faenas (Zen wave, Saurav 72000 y photosmith2011, licencia CC BY-SA).",
+        "destacado": True,
+        "fotos": [
+            ("molino-sag-1.jpg", "Imagen referencial: molinos SAG y de bolas en la planta concentradora de una minera"),
+            ("molino-sag-2.jpg", "Imagen referencial: interior de un molino con sus revestimientos y levantadores (lifters)"),
+            ("molino-sag-3.jpg", "Imagen referencial: casco de un molino con los pernos de sus revestimientos"),
+            ("molino-sag-4.jpg", "Imagen referencial: muñón (trunnion) y boca de alimentación de un molino"),
+        ],
+    },
+    {
         "titulo": "Buggy de competición",
         "categoria": Trabajo.Categoria.FABRICACION,
         "resumen": "Jaulas y estructuras para buggy y UTV de competición, trabajadas en nuestro taller.",

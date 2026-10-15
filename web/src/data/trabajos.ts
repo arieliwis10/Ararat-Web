@@ -13,6 +13,10 @@ import torre5 from '@/assets/img/torre-solar-5.jpg';
 import torre6 from '@/assets/img/torre-solar-6.jpg';
 import torre7 from '@/assets/img/torre-solar-7.jpg';
 import torre8 from '@/assets/img/torre-solar-8.jpg';
+import sag1 from '@/assets/img/molino-sag-1.jpg';
+import sag2 from '@/assets/img/molino-sag-2.jpg';
+import sag3 from '@/assets/img/molino-sag-3.jpg';
+import sag4 from '@/assets/img/molino-sag-4.jpg';
 import buggy1 from '@/assets/img/buggy-1.jpg';
 import buggy2 from '@/assets/img/buggy-2.jpg';
 import cinta1 from '@/assets/img/cinta-1.jpg';
@@ -71,6 +75,20 @@ export const TRABAJOS: TrabajoLocal[] = [
       { image: torre6, alt: 'Chasis del carro de arrastre de la torre solar en fabricación' },
       { image: torre7, alt: 'Diseño 3D de la torre solar con el mástil levantado' },
       { image: torre8, alt: 'Diseño 3D de la torre solar con el mástil abatido para el traslado' },
+    ],
+  },
+  {
+    titulo: 'Mantención de molino SAG',
+    categoria: 'fabricacion',
+    resumen: 'Cambio de revestimientos y mantención mecánica del molino SAG de una faena minera.',
+    descripcion:
+      'Realizamos trabajos de mantención en el molino SAG de una faena minera, durante detenciones programadas y con la documentación que exige la minera.\n\n• Cambio de revestimientos (relining): medición previa de espesores, retiro y montaje de piezas del manto, tapas, parrillas y levantadores de pulpa con máquina relainera, y torque y reapriete de pernos según fabricante.\n• Pernos de revestimiento: control de fugas, reapriete programado y reemplazo de pernos cortados.\n• Lifters: medición de perfil y altura para definir su cambio y mantener la molienda.\n• Descansos y trunnion: control de temperatura, presión de aceite, filtros y sellos.\n• Accionamiento: alineamiento, juego entre dientes, lubricación y termografía de corona y piñón.\n\nCada trabajo se ejecuta con PTS, análisis de riesgo (AST) en terreno e informe técnico con mediciones, fotos y recomendaciones.\n\nFotos referenciales de otras faenas (Zen wave, Saurav 72000 y photosmith2011, licencia CC BY-SA).',
+    destacado: true,
+    fotos: [
+      { image: sag1, alt: 'Imagen referencial: molinos SAG y de bolas en la planta concentradora de una minera' },
+      { image: sag2, alt: 'Imagen referencial: interior de un molino con sus revestimientos y levantadores (lifters)' },
+      { image: sag3, alt: 'Imagen referencial: casco de un molino con los pernos de sus revestimientos' },
+      { image: sag4, alt: 'Imagen referencial: muñón (trunnion) y boca de alimentación de un molino' },
     ],
   },
   {
