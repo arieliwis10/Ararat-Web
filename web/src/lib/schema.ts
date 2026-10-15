@@ -18,7 +18,7 @@ export function localBusinessSchema() {
     telephone: SITE.contact.phoneDisplay.replace(/\s/g, ''),
     email: SITE.contact.email,
     image: `${SITE.url}/og-default.jpg`,
-    logo: `${SITE.url}/favicon.svg`,
+    logo: `${SITE.url}/favicon-512.png`,
     address: {
       '@type': 'PostalAddress',
       ...(a.street && { streetAddress: a.street }),
