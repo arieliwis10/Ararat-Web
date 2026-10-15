@@ -22,4 +22,4 @@ deployment:
     # --- 2) Web estática ---
     # Solo copia si el build es válido y no trae nada que pise lo que ya existe en public_html
     # (una carpeta api/ ni un .htaccess, que se mantiene a mano).
-    - if [ -f web/dist/index.html ] && [ ! -e web/dist/api ] && [ ! -e web/dist/.htaccess ]; then /bin/cp -R web/dist/. "$WEBPATH"; else echo "web/dist ausente o inseguro: NO se copió la web"; fi
+    - if [ -f web/dist/index.html ] && [ ! -e web/dist/api ] && [ ! -e web/dist/.htaccess ]; then /bin/cp -R web/dist/. "$WEBPATH"; else echo "web/dist ausente o inseguro, NO se copio la web"; fi
