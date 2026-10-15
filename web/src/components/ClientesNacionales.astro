@@ -1,0 +1,50 @@
+---
+/** Logos de clientes nacionales (bloque Nosotros de la portada). Los logos están en src/assets/img/clientes/. */
+import { Image } from 'astro:assets';
+import losPelambres from '@/assets/img/clientes/los-pelambres.png';
+import escondida from '@/assets/img/clientes/escondida.png';
+import caserones from '@/assets/img/clientes/caserones.png';
+import sergon from '@/assets/img/clientes/sergon.png';
+import aconcagua from '@/assets/img/clientes/aconcagua-foods.png';
+import csf from '@/assets/img/clientes/csf.png';
+import dole from '@/assets/img/clientes/dole.png';
+import quelen from '@/assets/img/clientes/quelen-fruit.png';
+import lidea from '@/assets/img/clientes/lidea.png';
+import kaufmann from '@/assets/img/clientes/kaufmann.png';
+import perezCruz from '@/assets/img/clientes/perez-cruz.png';
+import cousino from '@/assets/img/clientes/cousino-macul.png';
+import greenvic from '@/assets/img/clientes/greenvic.png';
+import limagrain from '@/assets/img/clientes/limagrain.png';
+
+const clientes = [
+  { nombre: 'Minera Los Pelambres', logo: losPelambres },
+  { nombre: 'Minera Escondida', logo: escondida },
+  { nombre: 'Minera Caserones', logo: caserones },
+  { nombre: 'Sergon', logo: sergon },
+  { nombre: 'Aconcagua Foods', logo: aconcagua },
+  { nombre: 'Contenedores San Fernando', logo: csf },
+  { nombre: 'Dole', logo: dole },
+  { nombre: 'Quelen Fruit', logo: quelen },
+  { nombre: 'Lidea', logo: lidea },
+  { nombre: 'Kaufmann', logo: kaufmann },
+  { nombre: 'Liguai (Viña Pérez Cruz)', logo: perezCruz },
+  { nombre: 'Cousiño Macul', logo: cousino },
+  { nombre: 'Greenvic', logo: greenvic },
+  { nombre: 'Limagrain', logo: limagrain },
+];
+---
+
+<h3 class="text-3xl sm:text-4xl">Clientes nacionales</h3>
+<p class="mt-3 max-w-2xl text-lg text-acero-700">Empresas de la minería, la agroindustria y la industria que confían en nuestro trabajo.</p>
+<ul class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7" aria-label="Clientes nacionales">
+  {
+    clientes.map((c) => (
+      <li class="flex flex-col items-center gap-2 rounded-lg bg-white p-4 ring-1 ring-acero-100">
+        <div class="flex h-16 w-full items-center justify-center">
+          <Image src={c.logo} alt={`Logo de ${c.nombre}`} widths={[160, 320]} sizes="160px" class="max-h-full w-auto max-w-full object-contain" />
+        </div>
+        <span class="text-center text-xs font-medium text-acero-600">{c.nombre}</span>
+      </li>
+    ))
+  }
+</ul>

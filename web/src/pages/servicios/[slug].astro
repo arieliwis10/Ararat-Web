@@ -4,10 +4,8 @@ import { Picture } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import QuoteForm from '@/components/QuoteForm.astro';
-import Carousel from '@/components/Carousel.astro';
 import PreguntasFrecuentes from '@/components/PreguntasFrecuentes.astro';
 import { SERVICIOS, type Servicio } from '@/data/servicios';
-import { TRABAJOS } from '@/data/trabajos';
 import { waLink } from '@/lib/whatsapp';
 import { breadcrumbSchema, faqSchema, serviceSchema } from '@/lib/schema';
 
@@ -24,7 +22,6 @@ const crumbs = [
   { name: 'Servicios', href: '/servicios/' },
   { name: s.title, href: `/servicios/${s.slug}/` },
 ];
-const hayTrabajos = TRABAJOS.some((t) => t.categoria === s.slug);
 const waMessage = `Hola, quiero cotizar: ${s.title}.`;
 const otros = SERVICIOS.filter((o) => o.slug !== s.slug);
 
@@ -69,16 +66,6 @@ const schema = [
         <ul class="mt-4 flex flex-wrap gap-2">
           {s.industries.map((i) => <li class="rounded-full bg-acero-100 px-3 py-1 text-sm font-medium">{i}</li>)}
         </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Trabajos de este servicio publicados en el panel web; sin trabajos, la sección no se muestra. -->
-  <section class="section bg-acero-100" data-contenido-bloque hidden={!hayTrabajos}>
-    <div class="container-x">
-      <h2 class="text-3xl sm:text-4xl">Trabajos de {s.title.toLowerCase()}</h2>
-      <div class="mt-8">
-        <Carousel label={`Trabajos de ${s.title}`} tipo="trabajos-tarjetas" categoria={s.slug} />
       </div>
     </div>
   </section>

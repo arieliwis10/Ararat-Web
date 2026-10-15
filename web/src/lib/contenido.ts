@@ -34,6 +34,9 @@ export interface Trabajo {
   video: string | null;
 }
 
+/** Rótulo de la tarjeta: los proyectos de fabricación se presentan como "Proyecto especial". */
+export const rotuloTrabajo = (categoria: string, nombre: string) => (categoria === 'fabricacion' ? 'Proyecto especial' : nombre);
+
 export interface Equipo {
   id: string | number;
   nombre: string;
@@ -398,7 +401,7 @@ export function desdeApi(datos: any, origen: string): Contenido {
       id: t.id,
       titulo: t.titulo,
       categoria: t.categoria,
-      categoriaNombre: t.categoria_nombre,
+      categoriaNombre: rotuloTrabajo(t.categoria, t.categoria_nombre),
       resumen: t.resumen,
       descripcion: t.descripcion,
       destacado: t.destacado,

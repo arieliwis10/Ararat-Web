@@ -5,14 +5,11 @@ import ServiceCard from '@/components/ServiceCard.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import { SERVICIOS, FABRICACION, FABRICACION_CARD } from '@/data/servicios';
 import { breadcrumbSchema } from '@/lib/schema';
-import Contenido from '@/components/Contenido.astro';
-import { TRABAJOS } from '@/data/trabajos';
 
 const crumbs = [
   { name: 'Inicio', href: '/' },
   { name: 'Servicios', href: '/servicios/' },
 ];
-const hayProyectos = TRABAJOS.some((t) => t.categoria === FABRICACION_CARD.slug);
 ---
 
 <BaseLayout
@@ -51,10 +48,6 @@ const hayProyectos = TRABAJOS.some((t) => t.categoria === FABRICACION_CARD.slug)
             </article>
           ))
         }
-      </div>
-      <div data-contenido-bloque hidden={!hayProyectos}>
-        <h3 class="mt-12 text-3xl">Proyectos realizados</h3>
-        <Contenido tipo="trabajos-tarjetas" categoria={FABRICACION_CARD.slug} class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" />
       </div>
       <a href="/contacto/?servicio=otro" class="btn-primary mt-8">Cotizar un proyecto</a>
     </div>

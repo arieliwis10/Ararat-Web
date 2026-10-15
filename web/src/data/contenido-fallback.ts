@@ -1,7 +1,7 @@
 /** Convierte el respaldo (data/trabajos.ts, kairos.ts, pyrotect.ts y las faq de servicios.ts) al formato de lib/contenido.ts. */
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import type { Contenido, Foto } from '@/lib/contenido';
+import { rotuloTrabajo, type Contenido, type Foto } from '@/lib/contenido';
 import { SERVICIOS, categoriaTitle } from '@/data/servicios';
 import { EQUIPOS } from '@/data/kairos';
 import { CATEGORIAS, DESTACADOS } from '@/data/pyrotect';
@@ -30,7 +30,7 @@ export function contenidoLocal(): Promise<Contenido> {
         id: `local-${i}`,
         titulo: t.titulo,
         categoria: t.categoria,
-        categoriaNombre: categoriaTitle(t.categoria) ?? '',
+        categoriaNombre: rotuloTrabajo(t.categoria, categoriaTitle(t.categoria) ?? ''),
         resumen: t.resumen,
         descripcion: t.descripcion ?? '',
         destacado: t.destacado ?? false,
