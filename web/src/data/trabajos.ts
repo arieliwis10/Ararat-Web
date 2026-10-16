@@ -17,6 +17,10 @@ import sag1 from '@/assets/img/molino-sag-1.jpg';
 import sag2 from '@/assets/img/molino-sag-2.jpg';
 import sag3 from '@/assets/img/molino-sag-3.jpg';
 import sag4 from '@/assets/img/molino-sag-4.jpg';
+import correa1 from '@/assets/img/correa-mineria-1.jpg';
+import correa2 from '@/assets/img/correa-mineria-2.jpg';
+import correa3 from '@/assets/img/correa-mineria-3.jpg';
+import correa4 from '@/assets/img/correa-mineria-4.jpg';
 import buggy1 from '@/assets/img/buggy-1.jpg';
 import buggy2 from '@/assets/img/buggy-2.jpg';
 import cinta1 from '@/assets/img/cinta-1.jpg';
@@ -89,6 +93,20 @@ export const TRABAJOS: TrabajoLocal[] = [
       { image: sag2, alt: 'Imagen referencial: interior de un molino con sus revestimientos y levantadores (lifters)' },
       { image: sag3, alt: 'Imagen referencial: casco de un molino con los pernos de sus revestimientos' },
       { image: sag4, alt: 'Imagen referencial: muñón (trunnion) y boca de alimentación de un molino' },
+    ],
+  },
+  {
+    titulo: 'Mantención de correas transportadoras',
+    categoria: 'fabricacion',
+    resumen: 'Empalmes vulcanizados, alineamiento y cambio de polines y raspadores en correas transportadoras de una faena minera.',
+    descripcion:
+      'Realizamos mantención de correas transportadoras en faena minera, para que la correa corra centrada, sin patinar y sin detenciones imprevistas.\n\n• Empalmes: vulcanizado en caliente en prensa, con temperatura, presión y tiempo controlados; vulcanizado en frío y empalme mecánico con grapas para emergencias.\n• Alineamiento (tracking): ajuste de polines y poleas, polines autoalineantes y revisión de chutes para corregir desvíos.\n• Polines: cambio de polines de carga, retorno e impacto trabados o gastados, detectados con inspección y termografía.\n• Raspadores: ajuste y cambio de hojas en raspadores primarios, secundarios y arados en V.\n• Tensión, poleas y chutes: ajuste del sistema de tensado, revestimiento de poleas y chutes, y revisión de cordones de parada de emergencia y guardas.\n\nCada trabajo se ejecuta con PTS, análisis de riesgo (AST) en terreno e informe técnico con mediciones, fotos y recomendaciones.\n\nFotos referenciales de otras faenas (CDEGlobal, archer10 (Dennis) y Leonhard Lenz, licencias CC BY y CC BY-SA).',
+    destacado: true,
+    fotos: [
+      { image: correa1, alt: 'Imagen referencial: correas transportadoras descargando mineral sobre un acopio' },
+      { image: correa2, alt: 'Imagen referencial: correa transportadora y su estructura en una faena minera' },
+      { image: correa3, alt: 'Imagen referencial: correa transportadora de mina sobre su línea de polines' },
+      { image: correa4, alt: 'Imagen referencial: polines y bastidores de una correa transportadora con material' },
     ],
   },
   {

@@ -108,6 +108,19 @@ TRABAJOS = [
         ],
     },
     {
+        "titulo": "Mantención de correas transportadoras",
+        "categoria": Trabajo.Categoria.FABRICACION,
+        "resumen": "Empalmes vulcanizados, alineamiento y cambio de polines y raspadores en correas transportadoras de una faena minera.",
+        "descripcion": "Realizamos mantención de correas transportadoras en faena minera, para que la correa corra centrada, sin patinar y sin detenciones imprevistas.\n\n• Empalmes: vulcanizado en caliente en prensa, con temperatura, presión y tiempo controlados; vulcanizado en frío y empalme mecánico con grapas para emergencias.\n• Alineamiento (tracking): ajuste de polines y poleas, polines autoalineantes y revisión de chutes para corregir desvíos.\n• Polines: cambio de polines de carga, retorno e impacto trabados o gastados, detectados con inspección y termografía.\n• Raspadores: ajuste y cambio de hojas en raspadores primarios, secundarios y arados en V.\n• Tensión, poleas y chutes: ajuste del sistema de tensado, revestimiento de poleas y chutes, y revisión de cordones de parada de emergencia y guardas.\n\nCada trabajo se ejecuta con PTS, análisis de riesgo (AST) en terreno e informe técnico con mediciones, fotos y recomendaciones.\n\nFotos referenciales de otras faenas (CDEGlobal, archer10 (Dennis) y Leonhard Lenz, licencias CC BY y CC BY-SA).",
+        "destacado": True,
+        "fotos": [
+            ("correa-mineria-1.jpg", "Imagen referencial: correas transportadoras descargando mineral sobre un acopio"),
+            ("correa-mineria-2.jpg", "Imagen referencial: correa transportadora y su estructura en una faena minera"),
+            ("correa-mineria-3.jpg", "Imagen referencial: correa transportadora de mina sobre su línea de polines"),
+            ("correa-mineria-4.jpg", "Imagen referencial: polines y bastidores de una correa transportadora con material"),
+        ],
+    },
+    {
         "titulo": "Buggy de competición",
         "categoria": Trabajo.Categoria.FABRICACION,
         "resumen": "Jaulas y estructuras para buggy y UTV de competición, trabajadas en nuestro taller.",
