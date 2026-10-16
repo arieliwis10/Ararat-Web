@@ -109,8 +109,12 @@ class Equipo(ConFotos):
     )
     detalle = models.CharField("detalle", max_length=200, blank=True, help_text="Capacidad, modelo o referencia.")
     precio_dia = models.PositiveIntegerField(
-        "precio por día (CLP)", null=True, blank=True, help_text='Déjalo vacío para mostrar "Consultar".'
+        "precio por día (CLP)", null=True, blank=True, help_text='Neto, sin IVA. Déjalo vacío para mostrar "Consultar".'
     )
+    precio_semana = models.PositiveIntegerField(
+        "precio por semana (CLP)", null=True, blank=True, help_text="Neto, sin IVA. Opcional."
+    )
+    precio_mes = models.PositiveIntegerField("precio por mes (CLP)", null=True, blank=True, help_text="Neto, sin IVA. Opcional.")
     unidades = models.PositiveSmallIntegerField("unidades disponibles", default=1)
 
     class Meta:

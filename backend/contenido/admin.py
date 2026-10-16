@@ -193,14 +193,23 @@ class EquipoAdmin(ConFotosAdmin):
     modelo_foto = FotoEquipo
     campo_padre = "equipo"
     inlines = (FotoEquipoInline,)
-    list_display = ("portada", "nombre", "categoria", "unidades", "precio_dia", "publicado", "orden", "cantidad_fotos")
+    list_display = (
+        "portada", "nombre", "categoria", "unidades", "precio_dia", "precio_semana", "precio_mes", "publicado", "orden",
+        "cantidad_fotos",
+    )
     list_display_links = ("portada", "nombre")
-    list_editable = ("unidades", "precio_dia", "publicado", "orden")
+    list_editable = ("unidades", "precio_dia", "precio_semana", "precio_mes", "publicado", "orden")
     list_filter = ("categoria", "publicado")
     search_fields = ("nombre", "detalle")
     fieldsets = (
         (None, {"fields": ("nombre", "categoria", "detalle")}),
-        ("Arriendo", {"fields": ("unidades", "precio_dia")}),
+        (
+            "Arriendo",
+            {
+                "fields": ("unidades", ("precio_dia", "precio_semana", "precio_mes")),
+                "description": "Precios netos, sin IVA: la web los muestra con la nota «Valores netos».",
+            },
+        ),
         ("Cómo se muestra", {"fields": ("publicado", "orden")}),
         (
             "Fotos",

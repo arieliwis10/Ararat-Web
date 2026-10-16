@@ -176,7 +176,10 @@ for orden, datos in enumerate(TRABAJOS):
     print(f"Trabajo cargado: {trabajo.titulo}")
 
 if not Equipo.objects.exists():
-    autocargable = Equipo.objects.create(nombre="Autocargable para bins", detalle="Ref. A4B 20-1", unidades=20, orden=1)
+    autocargable = Equipo.objects.create(
+        nombre="Autocargable para bins", detalle="Ref. A4B 20-1", unidades=20, orden=1,
+        precio_dia=45000, precio_semana=180000, precio_mes=600000,
+    )
     agregar_fotos(
         FotoEquipo,
         "equipo",
@@ -193,7 +196,8 @@ if not Equipo.objects.exists():
         ],
     )
     grua = Equipo.objects.create(
-        nombre="Grúa horquilla 2,5 T", detalle="2,5 toneladas de carga · Ref. G2.5T 15-80", unidades=20, orden=2
+        nombre="Grúa horquilla 2,5 T", detalle="2,5 toneladas de carga · Ref. G2.5T 15-80", unidades=20, orden=2,
+        precio_dia=60000, precio_semana=220000, precio_mes=800000,
     )
     agregar_fotos(FotoEquipo, "equipo", grua, [("equipo-grua-horquilla.jpg", "Grúa horquilla TCM de 2,5 toneladas de Kairos Arriendos")])
     print("Equipos cargados: Autocargable para bins, Grúa horquilla 2,5 T")

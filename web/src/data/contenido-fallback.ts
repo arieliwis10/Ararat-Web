@@ -45,6 +45,8 @@ export function contenidoLocal(): Promise<Contenido> {
         categoria: e.categoria,
         detalle: e.detalle,
         precioDia: e.precioDia,
+        precioSemana: e.precioSemana,
+        precioMes: e.precioMes,
         unidades: e.unidades,
         fotos: await fotos(e.fotos),
       })),

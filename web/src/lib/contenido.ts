@@ -42,8 +42,10 @@ export interface Equipo {
   nombre: string;
   categoria: string;
   detalle: string;
-  /** Precio por día en CLP; null = "Consultar" */
+  /** Precios netos (sin IVA) en CLP; sin ninguno se muestra "Consultar" */
   precioDia: number | null;
+  precioSemana: number | null;
+  precioMes: number | null;
   unidades: number;
   /** La primera es la portada; el resto forma la galería */
   fotos: Foto[];
@@ -164,7 +166,26 @@ const ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;'
 const esc = (valor: unknown) => String(valor ?? '').replace(/[&<>"']/g, (c) => ESCAPES[c]);
 
 const clp = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
-export const formatPrice = (n: number | null) => (n == null ? 'Consultar' : `${clp.format(n)} / día`);
+
+/** Precios del arriendo (día, semana y mes) con la nota de IVA; sin precios, "Consultar". */
+function preciosEquipo(e: Equipo): string {
+  const precios = (
+    [
+      ['Día', e.precioDia],
+      ['Semana', e.precioSemana],
+      ['Mes', e.precioMes],
+    ] as const
+  ).filter(([, valor]) => valor != null);
+  if (!precios.length) return '<p class="mt-2 font-display text-xl font-bold">Consultar</p>';
+  const celdas = precios.map(
+    ([plazo, valor]) => `<div class="rounded-md bg-white/5 px-2 py-2 ring-1 ring-white/10">
+      <dt class="text-xs font-semibold uppercase tracking-wide text-acero-300">${plazo}</dt>
+      <dd class="font-display text-lg font-bold leading-tight">${clp.format(valor as number)}</dd>
+    </div>`,
+  );
+  return `<dl class="mt-3 grid grid-cols-3 gap-2 text-center">${celdas.join('')}</dl>
+      <p class="mt-1.5 text-xs text-acero-300">Valores netos</p>`;
+}
 
 /** Atributos que lee components/Visor.astro para abrir estas fotos en grande. */
 const grupoVisor = (titulo: string, texto: string, fotos: Foto[]) =>
@@ -254,7 +275,7 @@ function tarjetaEquipo(e: Equipo): string {
       <h3 class="mt-1 text-2xl">${esc(e.nombre)}</h3>
       ${e.detalle ? `<p class="mt-1 text-sm text-acero-300">${esc(e.detalle)}</p>` : ''}
       ${unidades}
-      <p class="mt-2 font-display text-xl font-bold">${formatPrice(e.precioDia)}</p>
+      ${preciosEquipo(e)}
       ${
         galeria > 0
           ? `<a href="#${idGaleria(e)}" class="mt-2 font-display font-semibold uppercase tracking-wide text-kairos-400 hover:text-white">Ver galería (${galeria} ${galeria === 1 ? 'foto' : 'fotos'}) →</a>`
@@ -414,6 +435,8 @@ export function desdeApi(datos: any, origen: string): Contenido {
       categoria: e.categoria,
       detalle: e.detalle,
       precioDia: e.precio_dia,
+      precioSemana: e.precio_semana ?? null,
+      precioMes: e.precio_mes ?? null,
       unidades: e.unidades,
       fotos: fotos(e.fotos),
     })),

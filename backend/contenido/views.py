@@ -68,6 +68,8 @@ class ContenidoView(APIView):
                     "categoria": e.categoria,
                     "detalle": e.detalle,
                     "precio_dia": e.precio_dia,
+                    "precio_semana": e.precio_semana,
+                    "precio_mes": e.precio_mes,
                     "unidades": e.unidades,
                     "fotos": _fotos(e, e.nombre),
                 }

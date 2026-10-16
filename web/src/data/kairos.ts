@@ -13,8 +13,10 @@ export interface EquipoLocal {
   nombre: string;
   categoria: string;
   detalle: string;
-  /** Precio por día en CLP. null = "Consultar". */
+  /** Precios netos (sin IVA) en CLP. null = no se muestra; sin ninguno, "Consultar". */
   precioDia: number | null;
+  precioSemana: number | null;
+  precioMes: number | null;
   unidades: number;
   /** La primera foto es la portada; el resto forma la galería. */
   fotos: { image: ImageMetadata; alt: string }[];
@@ -30,7 +32,9 @@ export const EQUIPOS: EquipoLocal[] = [
     nombre: 'Autocargable para bins',
     categoria: 'Maquinaria',
     detalle: 'Ref. A4B 20-1',
-    precioDia: null,
+    precioDia: 45000,
+    precioSemana: 180000,
+    precioMes: 600000,
     unidades: 20,
     fotos: [
       { image: autocargable, alt: 'Autocargable para bins A4B 20-1 de Kairos Arriendos' },
@@ -47,7 +51,9 @@ export const EQUIPOS: EquipoLocal[] = [
     nombre: 'Grúa horquilla 2,5 T',
     categoria: 'Maquinaria',
     detalle: '2,5 toneladas de carga · Ref. G2.5T 15-80',
-    precioDia: null,
+    precioDia: 60000,
+    precioSemana: 220000,
+    precioMes: 800000,
     unidades: 20,
     fotos: [{ image: gruaHorquilla, alt: 'Grúa horquilla TCM de 2,5 toneladas de Kairos Arriendos' }],
   },
