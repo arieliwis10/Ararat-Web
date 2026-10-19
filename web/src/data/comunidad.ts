@@ -11,6 +11,7 @@ import seguridad2 from '@/assets/img/comunidad-seguridad-2.jpg';
 import seguridad3 from '@/assets/img/comunidad-seguridad-3.jpg';
 import seguridad4 from '@/assets/img/comunidad-seguridad-4.jpg';
 import robotica1 from '@/assets/img/comunidad-robotica-1.jpg';
+import robotica2 from '@/assets/img/comunidad-robotica-2.jpg';
 
 export interface ActividadLocal {
   titulo: string;
@@ -59,6 +60,9 @@ export const ACTIVIDADES: ActividadLocal[] = [
     titulo: 'Liga de Robótica',
     eje: 'educacion',
     resumen: 'Patrocinamos la Liga de Robótica y fomentamos la tecnología entre niños y jóvenes.',
-    fotos: [{ image: robotica1, alt: 'Premiación de la Liga de Robótica patrocinada por Ararat' }],
+    fotos: [
+      { image: robotica1, alt: 'Premiación de la Liga de Robótica patrocinada por Ararat' },
+      { image: robotica2, alt: 'Equipo de la Liga de Robótica con camisetas de Ararat en la Universidad Santo Tomás' },
+    ],
   },
 ];

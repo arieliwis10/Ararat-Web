@@ -251,7 +251,8 @@ ACTIVIDADES = [
       ("comunidad-seguridad-4.jpg", "Izamiento de banderas en una ceremonia de seguridad comunitaria")]),
     ("Liga de Robótica", "educacion", True,
      "Patrocinamos la Liga de Robótica y fomentamos la tecnología entre niños y jóvenes.",
-     [("comunidad-robotica-1.jpg", "Premiación de la Liga de Robótica patrocinada por Ararat")]),
+     [("comunidad-robotica-1.jpg", "Premiación de la Liga de Robótica patrocinada por Ararat"),
+      ("comunidad-robotica-2.jpg", "Equipo de la Liga de Robótica con camisetas de Ararat en la Universidad Santo Tomás")]),
 ]
 
 if not ActividadComunidad.objects.exists():
